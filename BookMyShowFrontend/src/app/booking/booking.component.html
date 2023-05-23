@@ -1,0 +1,10 @@
+<p class="font-bold text-lg underline">Booking Details are :</p>
+<div class="bg-gray-200 m-2 p-2">
+  <p class="font-medium text-md">Booking Id : </p><p class="font-mono">{{bookingId}}</p>
+  <p class="font-medium text-md">Location Name : </p><p class="font-mono">{{booking.locationName}}</p>
+  <div class="inline-block"><p class="font-medium text-md">Movie Name : </p><p class="font-mono">{{booking.movieName}}</p></div>
+  <p class="font-medium text-md">Theatre Name : </p><p class="font-mono">{{booking.theatreName}}</p>
+<p class="font-medium text-md">Booked Seats are : </p><div *ngFor="let seat of seats" class="font-medium font-mono text-md inline-block">
+    <p>{{seat}} &nbsp;&nbsp; </p>
+  </div>
+</div>

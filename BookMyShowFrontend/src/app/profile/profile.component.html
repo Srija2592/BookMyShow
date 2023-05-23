@@ -1,0 +1,6 @@
+<h1 class=" m-2 p-2 text-center font-bold bg-amber-50">Profile</h1>
+<p  class="font-semibold">Full Name : </p><p class="font-mono">{{user.fullname}}</p>
+<div *ngFor="let booking of bookings">
+  <a href="/booking/{{booking.bookingId}}" class="text-center font-semibold p-2 m-2">Booking Id : {{booking.bookingId}}</a><br>
+</div>
+<button *ngIf="open==false" (click)="allbookings(username)" class="bg-gray-300 p-2 m-2 text-center justify-center font-semibold">My Bookings</button>

@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+input.ng-invalid.ng-touched{
+  border: 1px solid red;
+}
+html{
+  padding: 0;
+  height: 100%;
+}
+
+body{
+  margin-top: 40px;
+  height: 100%;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+#toast-container > div {
+  opacity: 1;
+}
+.toast {
+  font-size: initial !important;
+  border: initial !important;
+  backdrop-filter: blur(0) !important;
+}
+.toast-success {
+  background-color: #51A351 !important;
+}
+.toast-error {
+  background-color: #BD362F !important;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
