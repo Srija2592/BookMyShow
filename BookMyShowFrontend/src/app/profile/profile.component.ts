@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../booking.service';
 import { AuthService } from '../auth.service';
 import { UserService } from '../user.service';
+import { User } from '../user';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +17,14 @@ export class ProfileComponent implements OnInit{
 
   open:boolean=false;
 
-  user:any;
+  user:any={
+    id:0,
+    username:'',
+    email:'',
+    fullname:'',
+    bookingId:0,
+    roles:[]
+  };
 
   constructor(private bookingService:BookingService,private authService:AuthService,private userService:UserService){
     this.username=this.authService.getUserName();

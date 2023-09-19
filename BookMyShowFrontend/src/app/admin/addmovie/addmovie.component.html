@@ -1,0 +1,36 @@
+<div class="p-3" *ngIf="addedmovie==false">
+  <h1 class="text-lg font-medium ml-2 text-gray-600">Add Movie</h1>
+  <form
+    class="my-4"
+    [formGroup]="movieForm"
+    (ngSubmit)="addMovie()"
+  >
+    <label for="location" ><strong> Choose a Location  :</strong> </label>
+    <select  name="location" id="location" formControlName="location" (change)="onSelectlocation($event)">
+      <option value="{{location.locationName}}" *ngFor="let location of locations" >{{location.locationName}}</option>
+
+    </select>
+
+  <!-- </div> -->
+  <div class="p-2 flex flex-col">
+    <label for="movie" class="mb-2">Movie</label>
+    <input
+      type="text"
+      name="movie"
+      id="movie"
+      placeholder="movie"
+      value="{{ movieDto.movieName }}"
+      formControlName="movie"
+      class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-100 focus:border-indigo-300"
+    />
+  </div>
+  <button
+      type="submit"
+      class="border-[1px] mt-4 bg-black text-white font-medium p-3 w-full rounded-md hover:bg-gray-800"
+
+    >
+      Submit
+    </button>
+  </form>
+</div>
+

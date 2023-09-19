@@ -1,0 +1,6 @@
+<button type="submit" (click)="addloc()" class="border-[1px] mt-4 ml-8 mr-4 bg-black text-white font-medium p-3 w-1/4 rounded-md hover:bg-gray-800">Add Location</button>
+<button type="submit" (click)="addmovie()" class="border-[1px] mt-4 ml-4 mr-4 bg-black text-white font-medium p-3 w-1/4 rounded-md hover:bg-gray-800">Add Movie</button>
+<button type="submit" (click)="addtheatre()" class="border-[1px] mt-4 ml-4 mr-4 bg-black text-white font-medium p-3 w-1/4 rounded-md hover:bg-gray-800">Add Theatre</button>
+<div *ngIf="addingLocation==true"><app-addlocation></app-addlocation></div>
+<div *ngIf="addingMovie==true"><app-addmovie></app-addmovie></div>
+<div *ngIf="addingTheatre==true"><app-addtheatre></app-addtheatre></div>

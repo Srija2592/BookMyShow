@@ -31,6 +31,7 @@ export class AuthService {
       this.localstorage.store('username', data.username);
       this.localstorage.store('refreshToken', data.refreshToken);
       this.localstorage.store('expiresAt', data.expiresAt);
+      this.localstorage.store('roles', data.roles);
 
       this.loggedIn.emit(true);
       this.username.emit(data.username);
@@ -68,6 +69,10 @@ export class AuthService {
 
   getJwtToken() {
     return this.localstorage.retrieve('authenticationToken');
+  }
+
+  getUserRole() {
+    return this.localstorage.retrieve('roles');
   }
 
   refreshToken() {

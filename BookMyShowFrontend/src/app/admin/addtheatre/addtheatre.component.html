@@ -1,0 +1,55 @@
+<div class="p-3">
+  <h1 class="text-lg font-medium ml-2 text-gray-600">Add Theatre</h1>
+  <form
+    class="my-4"
+    [formGroup]="theatreForm"
+    (ngSubmit)="addTheatre()"
+  >
+    <label for="location" ><strong> Choose a Location  :</strong> </label>
+    <select  name="location" id="location" formControlName="location" (change)="onSelectlocation($event)">
+      <option value="{{location.locationName}}" *ngFor="let location of locations1" >{{location.locationName}}</option>
+
+    </select>
+    <br><br>
+
+    <label for="movie" ><strong> Choose a Movie  :</strong> </label>
+    <select  name="movie" id="movie" formControlName="movie" (change)="onSelectMovie($event)">
+      <option value="{{movie.movieName}}" *ngFor="let movie of movies" >{{movie.movieName}}</option>
+
+    </select>
+  <!-- </div> -->
+  <div class="p-2 flex flex-col">
+    <label for="theatre" class="mb-2">Theatre</label>
+    <input
+      type="text"
+      name="theatre"
+      id="theatre"
+      placeholder="theatre"
+      value="{{ theatreDto.theatreName}}"
+      formControlName="theatre"
+      class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-100 focus:border-indigo-300"
+    />
+  </div>
+
+  <div class="p-2 flex flex-col">
+    <label for="price" class="mb-2">Price</label>
+    <input
+      type="text"
+      name="price"
+      id="price"
+      placeholder="price"
+      value="{{ theatreDto.price}}"
+      formControlName="price"
+      class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-100 focus:border-indigo-300"
+    />
+  </div>
+  <button
+      type="submit"
+      class="border-[1px] mt-4 bg-black text-white font-medium p-3 w-full rounded-md hover:bg-gray-800"
+
+    >
+      Submit
+    </button>
+  </form>
+</div>
+

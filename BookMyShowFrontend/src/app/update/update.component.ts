@@ -22,8 +22,11 @@ export class UpdateComponent implements OnInit{
     this.updatedata={
       username:data.username,
       mobile:data.mobile,
-      fullname:data.fullname
-
+      fullname:data.fullname,
+      roles:data.roles,
+      email:data.email,
+      id:data.id,
+      bookingId:data.bookingId
     };
   }
 
@@ -33,7 +36,9 @@ export class UpdateComponent implements OnInit{
 
       username:new FormControl(this.authService.getUserName(),Validators.required),
       fullname:new FormControl('',Validators.required),
-      mobile:new FormControl('',Validators.required)
+      mobile:new FormControl('',Validators.required),
+      roles:new FormControl(this.data.roles,Validators.required),
+      email:new FormControl(this.data.email,Validators.required)
 
     });
 
@@ -44,8 +49,11 @@ export class UpdateComponent implements OnInit{
         this.updatedata.username=this.updateuserform.get('username')?.value;
         this.updatedata.mobile=this.updateuserform.get('mobile')?.value;
         this.updatedata.fullname=this.updateuserform.get('fullname')?.value;
-
-        this.userservice.update(this.updatedata).subscribe(data=>{this.user=data,
+        this.updatedata.roles=this.updateuserform.get('roles')?.value;
+        this.updatedata.roles
+        this.updatedata.email=this.updateuserform.get('email')?.value;
+        console.log(this.updatedata);
+        this.userservice.update(this.updatedata,this.updatedata.username).subscribe(data=>{this.user=data,
           this.submitted=true,
           console.log(this.user)
           this.dialogref.close();

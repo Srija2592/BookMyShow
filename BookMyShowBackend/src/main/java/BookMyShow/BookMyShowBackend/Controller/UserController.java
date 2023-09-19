@@ -21,9 +21,9 @@ public class UserController {
     private final UserService userService;
 
 
-    @PutMapping("update")
-    public ResponseEntity<User> updateuser(@RequestBody UserDto userDto){
-        return ResponseEntity.status(HttpStatus.OK).body(userService.updateuser(userDto));
+    @PutMapping("update/{id}")
+    public ResponseEntity<User> updateuser(@RequestBody UserDto userDto,@PathVariable String id){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateuser(userDto,id));
     }
 
     @GetMapping("{username}")

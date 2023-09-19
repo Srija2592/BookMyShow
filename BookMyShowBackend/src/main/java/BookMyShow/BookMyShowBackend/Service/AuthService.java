@@ -4,6 +4,7 @@ import BookMyShow.BookMyShowBackend.Dto.AuthenticationResponse;
 import BookMyShow.BookMyShowBackend.Dto.LoginRequest;
 import BookMyShow.BookMyShowBackend.Dto.RefreshTokenRequest;
 import BookMyShow.BookMyShowBackend.Dto.RegisterRequest;
+import BookMyShow.BookMyShowBackend.Entity.Role;
 import BookMyShow.BookMyShowBackend.Entity.User;
 import BookMyShow.BookMyShowBackend.Repository.UserRepository;
 import BookMyShow.BookMyShowBackend.Security.JwtProvider;
@@ -42,6 +43,7 @@ public class AuthService {
     @Transactional
     public void signup(RegisterRequest registerRequest){
         User user=new User();
+        user.setRoles(Role.ROLE_USER);
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setUsername(registerRequest.getUsername());

@@ -8,8 +8,8 @@ export class LocationService {
 
   constructor(private http:HttpClient) { }
 
-  addlocation(location:Location):any{
-    return this.http.post('http://localhost:8080/api/location/addlocation',location);
+  addlocation(location:string):any{
+    return this.http.post('http://localhost:8080/api/location/addlocation/'+location,location);
   }
 
   getlocations(){

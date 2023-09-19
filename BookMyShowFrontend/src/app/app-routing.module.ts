@@ -9,17 +9,25 @@ import { TheatreComponent } from './theatre/theatre.component';
 import { SeatComponent } from './seat/seat.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BookingComponent } from './booking/booking.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
-  {path:'',component:HomeComponent},
   {path:'sign-up',component:SignupComponent},
 {path:'login',component:LoginComponent},
-{path:'location',component:LocationComponent},
+  {path:'',component:HomeComponent},
+    {path:'location',component:LocationComponent},
 {path:'movie/:location',component:MovieComponent},
 {path:'theatre/:location/:movie',component:TheatreComponent},
 {path:'seat/:location/:movie/:theatre',component:SeatComponent},
 {path:'profile/:id',component:ProfileComponent},
-{path:'booking/:id',component:BookingComponent}];
+{path:'booking/:id',component:BookingComponent},
+
+
+{
+  path: 'admin',
+  loadChildren: () =>
+    import('./admin/admin.module').then((m) => m.AdminModule),
+},];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

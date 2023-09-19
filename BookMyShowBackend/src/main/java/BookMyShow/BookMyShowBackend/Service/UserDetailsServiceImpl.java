@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -28,9 +30,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<User> userOptional=userrepository.findByUsername(username);
         User user=userOptional.orElseThrow(()->new UsernameNotFoundException("No user " +
                 "Found with username : " + username));
-
+//        List<GrantedAuthority> authorities = user.getRoles().stream()
+//                .map(role -> new SimpleGrantedAuthority(role.name()))
+//                .collect(Collectors.toList());
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(), true, true, true, true, getAuthorities("USER"));
+                user.getUsername(), user.getPassword(), true, true, true, true,getAuthorities(user.getRoles().name()));
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(String role){

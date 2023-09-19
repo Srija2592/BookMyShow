@@ -22,6 +22,7 @@ import { SeatComponent } from './seat/seat.component';
 import { UpdateComponent } from './update/update.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BookingComponent } from './booking/booking.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { BookingComponent } from './booking/booking.component';
     NgxWebstorageModule.forRoot(),
     ToastrModule.forRoot(),
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    RouterModule.forRoot([])
   ],
   providers: [{provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,

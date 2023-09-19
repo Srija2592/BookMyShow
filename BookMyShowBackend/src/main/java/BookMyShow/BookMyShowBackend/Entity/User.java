@@ -4,7 +4,9 @@ package BookMyShow.BookMyShowBackend.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,7 +32,7 @@ public class User {
     private long mobile;
 
     @Enumerated(EnumType.STRING)
-    private Role  role;
+    private Role roles;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Booking> bookings;
