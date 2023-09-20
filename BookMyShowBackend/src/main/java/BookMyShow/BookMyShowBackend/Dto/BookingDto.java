@@ -23,6 +23,9 @@ public class BookingDto {
 
     private String username;
 
+    private String transactionId;
+
+    private long totalPrice;
 
     private List<Long> seats;
 }

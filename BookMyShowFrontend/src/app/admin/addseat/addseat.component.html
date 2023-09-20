@@ -1,1 +1,44 @@
-<p>addseat works!</p>
+<div *ngIf="seatadded==false" class="p-3">
+  <h1 class="text-lg font-medium ml-2 text-gray-600">Add Theatre</h1>
+  <form
+    class="my-4"
+    [formGroup]="seatForm"
+    (ngSubmit)="addSeat()"
+  >
+    <label for="location" ><strong> Choose a Location  :</strong> </label>
+    <select  name="location" id="location" formControlName="location" (change)="onSelectlocation($event)">
+      <option value="{{location.locationName}}" *ngFor="let location of locations2" >{{location.locationName}}</option>
+
+    </select>
+    <br><br>
+
+    <label for="movie" ><strong> Choose a Movie  :</strong> </label>
+    <select  name="movie" id="movie" formControlName="movie" (change)="onSelectMovie($event)">
+      <option value="{{movie.movieName}}" *ngFor="let movie of movies1" >{{movie.movieName}}</option>
+
+    </select>
+    <br><br>
+  <!-- </div> -->
+  <label for="theatre" ><strong> Choose a Theatre  :</strong> </label>
+    <select  name="theatre" id="theatre" formControlName="theatre" (change)="onSelectTheatre($event)">
+      <option value="{{theatre.theatreName}}" *ngFor="let theatre of theatres" >{{theatre.theatreName}}</option>
+
+    </select>
+
+
+  <!-- <label for="seatStatus" ><strong> Choose Status  :</strong> </label>
+    <select  name="seatStatus" id="movie" formControlName="seatStatus">
+      <option value="EMPTY">EMPTY</option>
+      <option value="BOOKED">BOOKED</option>
+
+    </select> -->
+  <button
+      type="submit"
+      class="border-[1px] mt-4 bg-black text-white font-medium p-3 w-full rounded-md hover:bg-gray-800"
+
+    >
+      Submit
+    </button>
+  </form>
+</div>
+

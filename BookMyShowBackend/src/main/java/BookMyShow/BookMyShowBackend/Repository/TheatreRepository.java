@@ -14,4 +14,6 @@ public interface TheatreRepository extends JpaRepository<Theatre,Long> {
     List<Theatre> findAllByMovie_movieNameAndLocation_locationName(String movieName, String locationName);
 
     Theatre findBytheatreNameAndMovie_movieNameAndLocation_locationName(String theatreName, String movieName, String locationName);
+
+
 }

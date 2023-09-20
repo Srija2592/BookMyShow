@@ -46,4 +46,8 @@ public class Booking {
     @JoinColumn(name ="theatreId",referencedColumnName = "theatreId")
     private Theatre theatre;
 
+    private String transactionId;
+
+    private long totalPrice;
+
 }

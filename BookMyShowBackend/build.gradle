@@ -37,13 +37,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
 	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
-
-
-
-
-
-
-
+	implementation 'com.razorpay:razorpay-java:1.4.4' //x.y.z = the version you want to install
 }
 
 tasks.named('test') {

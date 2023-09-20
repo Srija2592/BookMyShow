@@ -30,5 +30,10 @@ public class TheatreController {
         return ResponseEntity.status(HttpStatus.OK).body(theatreService.alltheatresbymovielocation(movieName,locationName));
     }
 
+    @GetMapping("bytheatre/{theatre}/{movie}/{location}")
+    public ResponseEntity<Theatre> getTheatre(@PathVariable String theatre,@PathVariable String movie,@PathVariable String location){
+        return ResponseEntity.status(HttpStatus.OK).body(theatreService.getTheatreByName(theatre,movie,location));
+    }
+
 
 }

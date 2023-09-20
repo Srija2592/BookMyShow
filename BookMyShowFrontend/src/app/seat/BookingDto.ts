@@ -4,4 +4,6 @@ export interface Booking{
   theatreName:string;
   username:string;
   seats:Array<number>;
+  totalPrice:number;
+  transactionId:string;
 }

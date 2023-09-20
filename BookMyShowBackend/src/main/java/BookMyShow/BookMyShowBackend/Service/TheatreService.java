@@ -44,4 +44,8 @@ public class TheatreService {
     public List<Theatre> alltheatresbymovielocation(String movieName,String locationName){
         return theatreRepository.findAllByMovie_movieNameAndLocation_locationName(movieName,locationName);
     }
+
+    public Theatre getTheatreByName(String theatre,String movie,String location){
+        return theatreRepository.findBytheatreNameAndMovie_movieNameAndLocation_locationName(theatre,movie,location);
+    }
 }

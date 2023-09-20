@@ -11,6 +11,7 @@ export class AdminhomeComponent {
   addingLocation:boolean=false;
   addingMovie:boolean=false;
   addingTheatre:boolean=false;
+  addingSeat:boolean=false;
   constructor(private router:Router) {
 
   }
@@ -22,6 +23,9 @@ export class AdminhomeComponent {
   }
   addmovie(){
     this.addingMovie=!this.addingMovie;
+  }
+  addseat(){
+    this.addingSeat=!this.addingSeat;
   }
   navigatetolocation(){
     console.log("working")

@@ -18,25 +18,25 @@ const routes: Routes = [
     path:'adminhome',
     component:AdminhomeComponent,
 
-    children:[
-      {
-        path:'addlocation',
-        component:AddlocationComponent,
-      },
-      {
-        path:'addmovie/:addlocation',
-        component:AddmovieComponent
-      },
-      {
-        path:'addtheatre/:addmovie/:addlocation',
-        component:AddtheatreComponent
-      }
-      ,{
-        path:'addseat/:addtheatre/:addmovie/:addlocation',
-        component:AddseatComponent
-      }
+    // children:[
+    //   {
+    //     path:'addlocation',
+    //     component:AddlocationComponent,
+    //   },
+    //   {
+    //     path:'addmovie/:addlocation',
+    //     component:AddmovieComponent
+    //   },
+    //   {
+    //     path:'addtheatre/:addmovie/:addlocation',
+    //     component:AddtheatreComponent
+    //   }
+    //   ,{
+    //     path:'addseat/:addtheatre/:addmovie/:addlocation',
+    //     component:AddseatComponent
+    //   }
 
-    ]
+    // ]
   }
 ];
 

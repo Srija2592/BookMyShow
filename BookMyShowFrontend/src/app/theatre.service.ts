@@ -16,4 +16,7 @@ export class TheatreService {
   theatresbymoviename(movie:string,location:string){
     return this.http.get('http://localhost:8080/api/theatre/theatres/'+movie+'/'+location);
   }
+  getTheatre(theatre:any,movie:any,location:any){
+    return this.http.get('http://localhost:8080/api/theatre/bytheatre/'+theatre+'/'+movie+'/'+location);
+  }
 }

@@ -17,6 +17,7 @@ public class Location {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long locationId;
 
+    @Column(unique = true)
     private String locationName;
 
     @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
