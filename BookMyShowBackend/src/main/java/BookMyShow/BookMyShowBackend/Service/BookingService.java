@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +66,8 @@ public class BookingService {
         booking.setSeats(seats);
         booking.setUser(user);
         booking.setPaymentStatus(PaymentStatus.SUCCESS);
-
+        LocalDate localDate=LocalDate.now();
+        booking.setBookingTime(localDate);
         System.out.println(seats);
         bookingRepository.save(booking);
         for(Seat s:seats){
@@ -88,6 +91,7 @@ public class BookingService {
         bookingDto.setUsername(b.getUser().getUsername());
         bookingDto.setTotalPrice(b.getTotalPrice());
         bookingDto.setTransactionId(b.getTransactionId());
+        bookingDto.setBookingTime(b.getBookingTime());
         List<Long> l=new ArrayList<>();
         for(Seat s:b.getSeats()){
             l.add(s.getSeatId());

@@ -6,4 +6,5 @@ export interface Booking{
   seats:Array<number>;
   totalPrice:number;
   transactionId:string;
+  bookingTime:Date;
 }

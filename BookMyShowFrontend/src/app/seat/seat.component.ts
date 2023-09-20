@@ -50,7 +50,8 @@ export class SeatComponent implements OnInit{
       username:authService.getUserName(),
       seats:[],
       totalPrice:0,
-      transactionId:''
+      transactionId:'',
+      bookingTime:new Date()
     }
 
   }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -50,4 +51,5 @@ public class Booking {
 
     private long totalPrice;
 
+    private LocalDate bookingTime;
 }

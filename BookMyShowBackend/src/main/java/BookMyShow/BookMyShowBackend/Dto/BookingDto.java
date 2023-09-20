@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -28,4 +29,6 @@ public class BookingDto {
     private long totalPrice;
 
     private List<Long> seats;
+
+    private LocalDate bookingTime;
 }
