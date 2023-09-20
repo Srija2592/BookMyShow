@@ -46,6 +46,8 @@ public class BookingService {
     private static final String KEY_SECRET="rLedzumG1X4XkGj0YCusqbVy";
     private static final String CURRENCY="INR";
 
+    private final MailService mailService;
+
     public Booking book(BookingDto bookingDto,String transactionId){
         User user=userRepository.findByUsername(bookingDto.getUsername()).orElseThrow(()->new UsernameNotFoundException("user not found"));
         Location location=locationRepository.findBylocationName(bookingDto.getLocationName());
@@ -73,6 +75,7 @@ public class BookingService {
         for(Seat s:seats){
             s.setBooking(booking);
         }
+        mailService.sendMail(new NotificationEmail("Book My Show booking details of transaction", user.getEmail(), "Booking details are :"+"transaction id : "+booking.getTransactionId()+" with total payment of : "+booking.getTotalPrice()+" for movie "+booking.getMovie().getMovieName()+" at theatre of "+booking.getTheatre().getTheatreName()+","+booking.getLocation().getLocationName()+" please check your booking details here "+"http://localhost:4200/booking/"+booking.getBookingId()));
         return booking;
 
     }

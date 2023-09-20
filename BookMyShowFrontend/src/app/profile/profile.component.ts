@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit{
     bookingId:0,
     roles:[]
   };
+  noofbookings:number=0;
 
   constructor(private bookingService:BookingService,private authService:AuthService,private userService:UserService){
     this.username=this.authService.getUserName();
@@ -34,11 +35,11 @@ export class ProfileComponent implements OnInit{
 
   }
   ngOnInit(): void {
-
+    this.noofbookings=this.bookings.size();
   }
 
   allbookings(username:string){
-    this.bookingService.allbookings(this.authService.getUserName()).subscribe(data=>{this.bookings=data,console.log(this.bookings),this.open=true});
+    this.bookingService.allbookings(this.authService.getUserName()).subscribe(data=>{this.bookings=data,console.log(this.bookings),this.open=true,this.noofbookings=this.bookings.length;});
   }
 
 }
