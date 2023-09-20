@@ -26,6 +26,7 @@ public class Movie {
 
 
 
+    private String movieImage;
 
 
     @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)

@@ -1,12 +1,12 @@
-<div *ngFor="let seat of seats" class="inline-block">
-  <p *ngIf="seat.seatStatus=='BOOKED'" [ngStyle]="{'color': 'red'}">
-    <button class="p-2 ml-12 text-xl m-4 h-2/3  bg-red-300 hover:bg-blue-100" (click)="selectseat(seat)"><strong>{{seat.seatId}}</strong></button>
-  </p>
-  <p *ngIf="seat.seatStatus=='EMPTY'" [ngStyle]="{'color': 'green'}">
-    <button class="p-2 ml-12 text-xl m-4  bg-green-300 hover:bg-blue-100" (click)="selectseat(seat)"><strong>{{seat.seatId}}</strong></button>
-  </p>
-  <p *ngIf="seat.seatStatus=='SELECTED'" [ngStyle]="{'color': 'blue'}">
-    <button class="p-2 ml-12 text-xl m-4  bg-blue-300 hover:bg-blue-100" (click)="selectseat(seat)"><strong>{{seat.seatId}}</strong></button>
-  </p>
+<div *ngFor="let seat of seats" class="w-1/6 inline-block">
+  <div><p *ngIf="seat.seatStatus=='BOOKED'" [ngStyle]="{'color': 'red'}">
+    <button class="seat p-2 ml-14 text-xl m-4 h-2/3   bg-red-300 hover:bg-blue-100" (click)="selectseat(seat)"><strong>{{seat.seatId}}</strong></button>
+  </p></div>
+  <div><p *ngIf="seat.seatStatus=='EMPTY'" [ngStyle]="{'color': 'green'}">
+    <button class="seat p-2 ml-14 text-xl m-4 bg-green-300 hover:bg-blue-100" (click)="selectseat(seat)"><strong>{{seat.seatId}}</strong></button>
+  </p></div>
+  <div><p *ngIf="seat.seatStatus=='SELECTED'" [ngStyle]="{'color': 'blue'}">
+    <button class="seat p-2 ml-14 text-xl m-4   bg-blue-300 hover:bg-blue-100" (click)="selectseat(seat)"><strong>{{seat.seatId}}</strong></button>
+  </p></div>
 </div>
 <button class="block rounded-xl p-2 w-16 h-10 ml-12 text-xl m-10  bg-gray-300 hover:bg-blue-100" (click)="book(selectedSeats)">Book</button>

@@ -14,4 +14,6 @@ public class MovieDto {
     private String movieName;
 
     private String locationName;
+
+    private String movieImage;
 }

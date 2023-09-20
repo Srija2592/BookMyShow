@@ -35,6 +35,7 @@ public class MovieService {
 
         List<Theatre> theatres=theatreRepository.findAllByMovie_movieNameAndLocation_locationName(movieDto.getMovieName(), movieDto.getLocationName());
         Movie movie=movieMapper.map(movieDto,location,theatres);
+        movie.setMovieImage(movieDto.getMovieImage());
         movie.setTheatreList(theatres);
         movieRepository.save(movie);
         return movie;

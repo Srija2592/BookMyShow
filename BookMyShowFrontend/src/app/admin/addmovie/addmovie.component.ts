@@ -20,7 +20,8 @@ export class AddmovieComponent implements OnInit{
   constructor(private router:Router,private movieService:MovieService,private locationService:LocationService){
     this.movieDto={
       movieName:'',
-      locationName:''
+      locationName:'',
+      movieImage:''
     }
   }
   ngOnInit(): void {
@@ -30,7 +31,8 @@ export class AddmovieComponent implements OnInit{
     this.movieForm=new FormGroup(
       {
         movie:new FormControl('',Validators.required),
-        location:new FormControl('',Validators.required)
+        location:new FormControl('',Validators.required),
+        movieImage:new FormControl('',Validators.required)
       }
     )
   }
@@ -38,6 +40,7 @@ export class AddmovieComponent implements OnInit{
   addMovie(){
     this.movieDto.movieName=this.movieForm.get('movie')?.value;
     this.movieDto.locationName=this.movieForm.get('location')?.value;
+    this.movieDto.movieImage=this.movieForm.get('movieImage')?.value;
     console.log(this.movieDto.locationName);
     this.movieService.addmovie(this.movieDto).subscribe((data:any)=>{
       console.log("movie added");

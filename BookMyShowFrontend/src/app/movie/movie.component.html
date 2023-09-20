@@ -1,3 +1,4 @@
-<div *ngFor="let movie of movies" class="inline-block">
+<div *ngFor="let movie of movies" class="inline-block ml-5 mr-5">
+  <img src="{{movie.movieImage}}" class="block p-2 ml-12 text-xl m-6 w-11/12 h-max">
   <button class="block p-2 ml-12 text-xl m-6 w-11/12 h-max bg-gray-300 hover:bg-blue-100" (click)="opentheatres(movie.movieName)"><strong>{{movie.movieName}}</strong></button>
 </div>
