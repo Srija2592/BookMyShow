@@ -33,6 +33,12 @@ export class TheatreComponent implements OnInit {
     this.router.navigateByUrl('/seat/'+this.location+'/'+this.movie+'/'+theatre);
   }
 
-
-
+  getInf:boolean=false;
+  getInfo(theatre:any){
+    console.log(theatre);
+    this.getInf=true;
+  }
+  goBack(){
+    this.getInf=false;
+  }
 }

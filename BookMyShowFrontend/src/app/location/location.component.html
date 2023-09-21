@@ -1,5 +1,24 @@
-<div *ngFor="let location of locations" class="inline-block">
-  <button class="block p-6 text-xl m-2  ml-12 w-11/12 h-max bg-gray-300  hover:bg-blue-100" (click)="openmovies(location)"><strong>{{location.locationName}}</strong></button>
+<div class="flex justify-center p-4">
+  <div *ngIf="display==true">
+    <input
+    type="text"
+    class="p-2 w-2/4 bg-white border-[1px] border-gray-300 rounded-md" #filter
 
+  />&nbsp;&nbsp;
+   <button class="primary bg-blue-300 p-2 border-spacing-2 hover:bg-slate-300" type="button" (click)="filterResults(filter.value)">Search</button>
+  </div>
+  <div *ngIf="display==false">
+    <h1>No locations to show.</h1>
+  </div>
+</div>
+<div *ngIf="searchFound==true">
+<div *ngFor="let loca of filteredLocations">
+  <button class="block p-6 text-xl m-2  ml-12 w-11/12 h-max bg-gray-300  hover:bg-blue-100" (click)="openmovies(loca)"><strong>{{loca.locationName}}</strong></button>
+</div>
+</div>
+<div *ngIf="searchFound==false">
+  <div *ngFor="let location of locations" class="inline-block w-1/4">
+    <button class="block p-6 text-xl m-2  ml-12 w-11/12 h-max bg-gray-300  hover:bg-blue-100" (click)="openmovies(location)"><strong>{{location.locationName}}</strong></button>
+  </div>
 </div>
 

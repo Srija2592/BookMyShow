@@ -13,14 +13,40 @@ export class LocationComponent implements OnInit{
 
   movielist:any;
 
-  constructor(private locationService:LocationService,private router:Router){}
+
+  display:boolean=false;
+  filteredLocations:any=[];
+  constructor(private locationService:LocationService,private router:Router){
+    this.filteredLocations=locationService.getlocations();
+  }
 
   ngOnInit(): void {
     this.locationService.getlocations().subscribe((data)=>{this.locations=data,
-      console.log(this.locations)}
+      console.log(this.locations);
+      if(this.locations.length==0){
+        this.display=false;
+      }
+      else{
+        this.display=true;
+      }}
     )
 
   }
+  searchFound:boolean=false;
+
+  filterResults(text:string){
+    if (!text) {
+      this.filteredLocations = this.locations;
+    }
+
+    this.filteredLocations = this.locations.filter(
+      (loc:any) => loc?.locationName.toLowerCase().includes(text.toLowerCase())
+    );
+    if(this.filteredLocations.length!=0){
+      this.searchFound=true;
+    }
+    }
+
 
   openmovies(location:any){
     this.movielist=location.movieList;
