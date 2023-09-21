@@ -1,14 +1,14 @@
 <div *ngFor="let theatre of theatres" class="inline-block">
   <div *ngIf="getInf==false">
-    <button class="block p-2 ml-12 text-xl m-10 w-11/12 h-max bg-gray-300 hover:bg-blue-100" (click)="openseats(theatre.theatreName)"><strong>{{theatre.theatreName}}</strong></button>
-    <button class="block  ml-12 text-xl m-10 w-11/12 " (click)="getInfo(theatre)"><p>get info &#8594;</p></button>
+    <button class="block p-2 ml-12 text-inherit m-10 w-7/12 h-max bg-gray-300 hover:bg-blue-100" (click)="openseats(theatre.theatreName)"><strong>{{theatre.theatreName}}</strong></button>
+    <button class="block  ml-12 text-inherit m-10 w-7/12 " (click)="getInfo(theatre)"><p>get info &#8594;</p></button>
   </div>
   <div *ngIf="getInf==true">
     <p class="font-bold text-lg underline">Theatre Details are :</p>
     <div class="bg-gray-200 m-2 p-2">
       <p class="font-medium text-md">Ticket Price : </p><p class="font-mono">{{theatre.theatreName}}</p>
     <p class="font-medium text-md">Ticket Price : </p><p class="font-mono">{{theatre.price}}</p>
-    <button class="block  ml-12 text-xl m-10 w-11/12" (click)="goBack()"><p>back &larr;</p></button>
+    <button class="block  ml-12 text-inherit m-10 w-7/12" (click)="goBack()"><p>back &larr;</p></button>
     </div>
   </div>
 </div>

@@ -35,7 +35,7 @@ export class ProfileComponent implements OnInit{
 
   }
   ngOnInit(): void {
-    this.noofbookings=this.bookings.size();
+
   }
 
   allbookings(username:string){
