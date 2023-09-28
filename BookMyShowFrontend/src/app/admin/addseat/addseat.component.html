@@ -3,8 +3,12 @@
   <form
     class="my-4"
     [formGroup]="seatForm"
-    (ngSubmit)="addSeat()"
+    (ngSubmit)="addSeats()"
   >
+  <div class="p-2 flex flex-col">
+  <label class="mb-2" for="noofseats" ><strong> No of seats  :</strong> </label>
+  <input type="text" name="noofseats" id="noofseats" formControlName="noofseats">
+  </div>
     <label for="location" ><strong> Choose a Location  :</strong> </label>
     <select  name="location" id="location" formControlName="location" (change)="onSelectlocation($event)">
       <option value="{{location.locationName}}" *ngFor="let location of locations2" >{{location.locationName}}</option>
