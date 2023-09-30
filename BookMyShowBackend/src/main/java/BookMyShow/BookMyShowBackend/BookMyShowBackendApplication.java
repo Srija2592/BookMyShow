@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BookMyShowBackendApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(BookMyShowBackendApplication.class, args);
 	}
 

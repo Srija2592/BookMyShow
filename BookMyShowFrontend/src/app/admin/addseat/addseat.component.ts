@@ -19,6 +19,7 @@ export class AddseatComponent implements OnInit{
   movies1:any;
   theatres:any;
   seatadded:boolean=false;
+  noofseats:number=0;
   constructor(private seatService:SeatService,private theatreService:TheatreService,private movieService:MovieService,private locationService:LocationService){
     this.seatDto={
       locationName:'',
@@ -31,7 +32,8 @@ export class AddseatComponent implements OnInit{
     this.seatForm=new FormGroup({
       location:new FormControl('',Validators.required),
       movie:new FormControl('',Validators.required),
-      theatre:new FormControl('',Validators.required)
+      theatre:new FormControl('',Validators.required),
+      noofseats:new FormControl('',Validators.required)
     })
   }
 
@@ -56,8 +58,11 @@ export class AddseatComponent implements OnInit{
 
   }
 
-  addSeat(){
-    this.seatService.addseat(this.seatDto).subscribe((data)=>{console.log("seat added"),this.seatadded=true});
+  addSeats(){
+    this.noofseats=this.seatForm.get('noofseats')?.value;
+    console.log(this.noofseats);
+    for(let i=0;i<this.noofseats;i++){
+      this.seatService.addseat(this.seatDto).subscribe((data)=>{console.log("seat added"),this.seatadded=true});}
   }
 
 }
