@@ -1,45 +1,74 @@
-<div class="flex items-center bg-white ">
-  <div class="container mx-auto px-3 py-1 border border-gray-700 w-96 mt-4">
-      <div class="max-w-md mx-auto my-10">
-          <div class="text-center">
-              <h1 class="my-3 text-3xl font-semibold text-gray-700">Login</h1>
+<div class="login-comp">
+  <div class="login-form">
+    <div class="login-head">
+      <h1 class="">Login</h1>
+    </div>
+    <div class="login-form">
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <div class="">
+          <label for="user_name" class="username-name">Username</label>
+
+          <input
+            type="text"
+            id="user_name"
+            class=""
+            [formControlName]="'username'"
+            name="user_name"
+            required
+            autofocus
+          />
+          <small
+            *ngIf="
+              !loginForm.get('username')?.valid &&
+              loginForm.get('username')?.touched
+            "
+            class="error-text"
+          >
+            Please provide a valid username
+          </small>
+        </div>
+        <br />
+        <div class="mb-4">
+          <label for="password" class="password-name">Password</label>
+
+          <input
+            type="password"
+            id="password"
+            class=""
+            [formControlName]="'password'"
+            name="password"
+            required
+          />
+          <small
+            *ngIf="
+              !loginForm.get('password')?.valid &&
+              loginForm.get('password')?.touched
+            "
+            class="error-text"
+          >
+            Password cannot be empty
+          </small>
+        </div>
+        <br />
+        <div class="redirect">
+          <div class="login-button">
+            <button type="submit" class="">LOGIN</button>
+            <div ><br>
+              <div>
+              New User? <a routerLink="/sign-up" class="">SIGNUP</a>
+            </div>
           </div>
-              <div class="m-7">
-                  <form [formGroup]="loginForm" (ngSubmit)="login()">
-                      <div class="mb-4">
-                          <label for="user_name" class="block mb-2 text-sm text-gray-600">Username</label>
-
-                              <input type="text" id="user_name" class="w-full px-3 py-2 placeholder-gray-300 border border-gray-700 rounded-md focus:outline-none focus:ring focus:ring-blue-100 focus:border-indigo-300" [formControlName]="'username'" name="user_name" required
-                                  autofocus>
-                              <span *ngIf="!loginForm.get('username')?.valid && loginForm.get('username')?.touched" class="text-red-500">
-                                 Please provide a valid username
-                              </span>
-
-                      </div><br>
-                      <div class="mb-4">
-                          <label for="password" class="block mb-2 text-sm text-gray-600">Password</label>
-
-                              <input type="password" id="password" class="w-full px-3 py-2 placeholder-gray-500 border border-gray-500 rounded-md focus:outline-none focus:ring focus:ring-blue-100 focus:border-indigo-300" [formControlName]="'password'" name="password" required>
-                              <span *ngIf="!loginForm.get('password')?.valid && loginForm.get('password')?.touched" class="text-red-500">
-                                Password cannot be empty
-                              </span>
-
-                      </div><br>
-                      <span >
-                          <button type="submit" class="rounded-full bg-gray-300  py-2 px-3 hover:opacity-30 text-center ">
-                              LOGIN
-                          </button>
-                          <span style="padding-left: 15px">New User? <a routerLink="/sign-up" class="text-blue-600 hover:opacity-50">SIGNUP</a></span>
-                      </span>
-                      <div class="text-center m-auto mt-10 border-black w-2/3 bg-red-500" *ngIf='this.isError'>
-                           <p class="text-center m-5 font-bold color-aliceblue">Login Failed. Please check your credentials and try again.</p>
-                      </div>
-                      <div class="p-2 m-auto mt-5 border-[1px] border-green-500 rounded"  *ngIf="this.registerSuccessMessage.length > 0">
-                          <p class="text-center text-sm font-normal text-green-500">{{registerSuccessMessage}}</p>
-                     </div>
-                  </form>
-              </div>
           </div>
-      </div>
-
+          <div class="" *ngIf="this.isError">
+            <p class="">
+              Login Failed. Please check your credentials and try again.
+            </p>
+          </div>
+          <div class="" *ngIf="this.registerSuccessMessage.length > 0">
+            <p class="">{{ registerSuccessMessage }}</p>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
+</div>
