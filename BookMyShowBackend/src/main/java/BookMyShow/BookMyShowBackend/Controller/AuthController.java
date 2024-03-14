@@ -48,5 +48,11 @@ public class AuthController {
     public AuthenticationResponse refreshTokens(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) throws Exception {
         return authService.refreshToken(refreshTokenRequest);
     }
+
+    @GetMapping("/loggedIn")
+    public boolean isLoggedIn(){
+        System.out.println(authService.isLoggedIn()+".....................................");
+        return authService.isLoggedIn();
+    }
 }
 

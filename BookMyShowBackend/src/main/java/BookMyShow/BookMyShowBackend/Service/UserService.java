@@ -7,6 +7,7 @@ import BookMyShow.BookMyShowBackend.Repository.BookingRepository;
 import BookMyShow.BookMyShowBackend.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +24,13 @@ public class UserService {
     private final BookingRepository bookingRepository;
 
     private final UserMapper userMapper;
+
+    private  final UserDetailsServiceImpl userDetailsService;
     public User updateuser(UserDto userDto,String username){
 //        User user=userRepository.findByUserId(id);
-        User user1=userRepository.findByUsername(userDto.getUsername()).orElseThrow(()->new UsernameNotFoundException("user not found"));
+        UserDetails user=userDetailsService.loadUserByUsername(userDto.getUsername());
+        System.out.println(user);
+        User user1=userRepository.findByUsername(user.getUsername()).orElseThrow(()->new UsernameNotFoundException("user not found"));
         user1.setRoles(userDto.getRoles());
         user1.setFullname(userDto.getFullname());
         user1.setMobile(userDto.getMobile());

@@ -1,5 +1,5 @@
 package BookMyShow.BookMyShowBackend.Entity;
 
 public enum Role {
-    ROLE_USER,ROLE_ADMIN
+    USER,ADMIN
 }

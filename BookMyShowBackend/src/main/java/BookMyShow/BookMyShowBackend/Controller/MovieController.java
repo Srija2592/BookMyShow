@@ -6,6 +6,7 @@ import BookMyShow.BookMyShowBackend.Service.MovieService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class MovieController {
     private final MovieService movieService;
 
     @PostMapping("addmovie")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public ResponseEntity<Movie> addMovie(@RequestBody MovieDto movieDto){
         return ResponseEntity.status(HttpStatus.OK).body(movieService.addMovie(movieDto));
     }
@@ -30,6 +32,7 @@ public class MovieController {
     }
 
     @GetMapping("moviebyname/{locationName}")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     public ResponseEntity<List<Movie>> getMovieBymovieName(@PathVariable String locationName){
         return ResponseEntity.status(HttpStatus.OK).body(movieService.getMovieBylocationName(locationName));
     }

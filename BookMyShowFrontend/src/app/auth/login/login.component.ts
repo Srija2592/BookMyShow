@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit{
     this.loginRequest.password = this.loginForm.get('password')?.value;
 
     this.authService.login(this.loginRequest).subscribe((data) => {
+      console.log(data)
 
       this.isError = false;
       this.router.navigateByUrl('');

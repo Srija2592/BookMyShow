@@ -1,0 +1,36 @@
+.add-movie {
+  background-color: aliceblue;
+  height: 15rem;
+  width: 25rem;
+  margin: 2rem 30rem;
+  .head {
+    text-align: center;
+    margin-top: 5rem;
+    padding-top: 1rem;
+  }
+  .movie-name {
+    margin-left: 4rem;
+    margin-bottom: 1rem;
+  }
+  .location {
+    margin-left: 4rem;
+    margin-bottom: 1rem;
+  }
+  .movie-image {
+    margin-left: 4rem;
+    margin-bottom: 1rem;
+  }
+  .button {
+    margin-left: 10rem;
+    margin-top: 2rem;
+  }
+  .actionBtn{
+    margin-left: 10rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  webcam{
+    margin-left: 8rem;
+    margin-top: 2rem;
+  }
+}

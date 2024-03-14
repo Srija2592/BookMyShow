@@ -1,8 +1,5 @@
 .login-comp {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
   border: 1px solid#ccc;
   background-color: #f1f1f1;
   width: 20rem;

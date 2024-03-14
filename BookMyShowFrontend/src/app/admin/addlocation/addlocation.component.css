@@ -1,0 +1,18 @@
+.add-location {
+  background-color: aliceblue;
+  height: 10rem;
+  width: 20rem;
+  margin: 2rem 30rem;
+  .head {
+    text-align: center;
+    margin-top: 5rem;
+    padding-top: 1rem;
+  }
+  .location-name {
+    margin-left: 2rem;
+  }
+  .button {
+    margin-left: 8rem;
+    margin-top: 2rem;
+  }
+}

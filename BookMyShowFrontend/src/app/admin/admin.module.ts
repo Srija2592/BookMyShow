@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
+import {WebcamModule } from 'ngx-webcam';
 import { AddlocationComponent } from './addlocation/addlocation.component';
 import { AdminhomeComponent } from './adminhome/adminhome.component';
 import { AddmovieComponent } from './addmovie/addmovie.component';
@@ -28,7 +28,8 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    WebcamModule
   ]
 })
 export class AdminModule { }

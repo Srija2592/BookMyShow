@@ -1,48 +1,82 @@
-<div class="p-3" *ngIf="addedmovie==false">
-  <h1 class="text-lg font-medium ml-2 text-gray-600">Add Movie</h1>
-  <form
-    class="my-4"
-    [formGroup]="movieForm"
-    (ngSubmit)="addMovie()"
-  >
-    <label for="location" ><strong> Choose a Location  :</strong> </label>
-    <select  name="location" id="location" formControlName="location" (change)="onSelectlocation($event)">
-      <option value="{{location.locationName}}" *ngFor="let location of locations" >{{location.locationName}}</option>
+<div class="add-movie" *ngIf="addedmovie == false">
+  <h1 class="head">Add Movie</h1>
+  <form class="add-form" [formGroup]="movieForm" (ngSubmit)="addMovie()">
+    <div class="location">
+      <label for="location" class="location-label"
+        ><strong> Choose a Location :</strong>
+      </label>
+      <select
+        name="location"
+        id="location"
+        formControlName="location"
+        (change)="onSelectlocation($event)"
+      >
+        <option
+          value="{{ location.locationName }}"
+          *ngFor="let location of locations"
+        >
+          {{ location.locationName }}
+        </option>
+      </select>
+    </div>
+    <!-- </div> -->
+    <div class="movie-name">
+      <label for="movie" class="mb-2">Movie : </label>
+      <input
+        type="text"
+        name="movie"
+        id="movie"
+        placeholder="movie"
+        value="{{ movieDto.movieName }}"
+        formControlName="movie"
+        class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-100 focus:border-indigo-300"
+      />
+    </div>
+    <div class="movie-image" >
+      <label for="movie" class="mb-2">Movie : </label>
+      <input
+        type="text"
+        name="movieImage"
+        id="movieImage"
+        placeholder="movieImage"
+        value="{{ movieDto.movieImage }}"
+        formControlName="movieImage"
+        class=""
+      />
+    </div>
 
-    </select>
+    <!-- <button class="actionBtn" (click)="openCamera()">Open Camera</button>
+    <br>
+    <div *ngIf="isOpenCamera">
+      <webcam
+        [height]="200"
+        [width]="200"
+        [trigger]="triggerObservable"
+        (imageCapture)="handleImage($event)"
+      >
+      </webcam>
 
-  <!-- </div> -->
-  <div class="p-2 flex flex-col">
-    <label for="movie" class="mb-2">Movie</label>
-    <input
-      type="text"
-      name="movie"
-      id="movie"
-      placeholder="movie"
-      value="{{ movieDto.movieName }}"
-      formControlName="movie"
-      class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-100 focus:border-indigo-300"
-    />
-  </div>
-  <div class="p-2 flex flex-col">
-    <label for="movie" class="mb-2">Movie</label>
-    <input
-      type="text"
-      name="movieImage"
-      id="movieImage"
-      placeholder="movieImage"
-      value="{{ movieDto.movieImage }}"
-      formControlName="movieImage"
-      class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-100 focus:border-indigo-300"
-    />
-  </div>
-  <button
-      type="submit"
-      class="border-[1px] mt-4 bg-black text-white font-medium p-3 w-full rounded-md hover:bg-gray-800"
-
-    >
-      Submit
-    </button>
+      <button class="actionBtn" (click)="triggerSnapshot()">
+        Click Here and take the Shot
+      </button>
+      <button type="submit" class="button">Submit</button>
+    </div> -->
+    <button type="submit" class="button">Submit</button>
   </form>
+
 </div>
 
+<!-- <div>
+  <webcam [height]="400"
+          [width]="1000"
+          [trigger]="triggerObservable"
+              (imageCapture)="handleImage($event)">
+   </webcam>
+
+  <button class="actionBtn" (click)="triggerSnapshot();">
+      Click Here and take the Shot</button> -->
+
+<!-- <div class="snapshot" *ngIf="webcamImage">
+    <h2>Here is your image!</h2>
+    <img [src]="webcamImage.imageAsDataUrl"/>
+  </div> -->

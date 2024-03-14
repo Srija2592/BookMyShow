@@ -12,25 +12,64 @@ import { BookingComponent } from './booking/booking.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
-  {path:'sign-up',component:SignupComponent},
-{path:'login',component:LoginComponent},
-  {path:'',component:HomeComponent},
-    {path:'location',component:LocationComponent},
-{path:'movie/:location',component:MovieComponent},
-{path:'theatre/:location/:movie',component:TheatreComponent},
-{path:'seat/:location/:movie/:theatre',component:SeatComponent},
-{path:'profile/:id',component:ProfileComponent},
-{path:'booking/:id',component:BookingComponent},
+  { path: 'sign-up', component: SignupComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '', component: HomeComponent },
+  {
+    path: 'location',
+    component: LocationComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: 'ROLE_USER',
+    },
+  },
+  {
+    path: 'movie/:location',
+    component: MovieComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: 'ROLE_USER',
+    },
+  },
+  {
+    path: 'theatre/:location/:movie',
+    component: TheatreComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: 'ROLE_USER',
+    },
+  },
+  {
+    path: 'seat/:location/:movie/:theatre',
+    component: SeatComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: 'ROLE_USER',
+    },
+  },
+  { path: 'profile/:id', component: ProfileComponent },
+  {
+    path: 'booking/:id',
+    component: BookingComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: 'ROLE_USER',
+    },
+  },
 
-
-{
-  path: 'admin',
-  loadChildren: () =>
-    import('./admin/admin.module').then((m) => m.AdminModule),
-},];
+  {
+    path: 'admin',
+    canActivate: [AuthGuard],
+    data: {
+      role: 'ROLE_ADMIN',
+    },
+    loadChildren: () =>
+      import('./admin/admin.module').then((m) => m.AdminModule),
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

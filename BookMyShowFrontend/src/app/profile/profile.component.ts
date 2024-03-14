@@ -29,9 +29,10 @@ export class ProfileComponent implements OnInit{
 
   constructor(private bookingService:BookingService,private authService:AuthService,private userService:UserService){
     this.username=this.authService.getUserName();
+    if(this.username){
     userService.getuser(this.username).subscribe(data=>{
       this.user=data,console.log(this.user)
-    })
+    })}
 
   }
   ngOnInit(): void {

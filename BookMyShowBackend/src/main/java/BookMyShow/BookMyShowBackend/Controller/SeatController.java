@@ -6,6 +6,7 @@ import BookMyShow.BookMyShowBackend.Service.SeatService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +20,13 @@ public class SeatController {
     private final SeatService seatService;
 
     @PostMapping("addseat")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public ResponseEntity<Seat> addSeat(@RequestBody SeatDto seatDto){
         return ResponseEntity.status(HttpStatus.OK).body(seatService.addSeat(seatDto));
     }
 
     @GetMapping("allseats/{theatreName}/{movieName}/{locationName}")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     public ResponseEntity<List<Seat>> getAllseats(@PathVariable String theatreName,@PathVariable String movieName,@PathVariable String locationName){
         return ResponseEntity.status(HttpStatus.OK).body(seatService.getAllBymovieName(theatreName,movieName,locationName));
     }

@@ -3,16 +3,25 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { SignupRequest } from './auth/signup/signuprequest';
 import { LoginRequest } from './auth/login/loginrequest';
-import { Observable, map, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map, tap, throwError } from 'rxjs';
 import { LoginResponse } from './auth/login/loginresponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
+  @Output() loggedInn: EventEmitter<boolean> = new EventEmitter();
   @Output() username: EventEmitter<string> = new EventEmitter();
-
+  loginDetails=new Subject<LoginResponse>();
+  loginResponse!:LoginResponse;
+  userModel:LoginResponse={
+    authenticationToken: '',
+    refreshToken: '',
+    expiresAt: new Date(),
+    username: '',
+    roles:[]
+  }
+  user=new BehaviorSubject<LoginResponse>(this.userModel);
 
   refreshTokenPayload = {
     refreshToken: this.getRefreshToken(),
@@ -25,17 +34,22 @@ export class AuthService {
     return this.http.post('http://localhost:8080/api/auth/signup',singuprequest, { responseType: 'text' });
   }
 
-  login(loginrequest:LoginRequest):Observable<boolean>{
-    return this.http.post<LoginResponse>('http://localhost:8080/api/auth/login',loginrequest).pipe(map(data => {
+  login(loginrequest:LoginRequest):Observable<LoginResponse>{
+    return this.http.post<LoginResponse>('http://localhost:8080/api/auth/login', loginrequest).pipe(map(data => {
       this.localstorage.store('authenticationToken', data.authenticationToken);
       this.localstorage.store('username', data.username);
       this.localstorage.store('refreshToken', data.refreshToken);
       this.localstorage.store('expiresAt', data.expiresAt);
       this.localstorage.store('roles', data.roles);
+      this.isLoggedIn().subscribe((d)=>{
+        this.loggedInn.emit(d);
+        console.log(d);
+      })
 
-      this.loggedIn.emit(true);
       this.username.emit(data.username);
-      return true;
+      this.user.next(data);
+      this.user.subscribe((d)=>{console.log(d)});
+      return data;
     }));
   }
 
@@ -43,8 +57,10 @@ export class AuthService {
     return this.localstorage.retrieve('username');
   }
 
-  isLoggedIn(): boolean {
-    return this.getJwtToken() != null;
+  isLoggedIn(): Observable<boolean> {
+   return this.http.get<boolean>('http://localhost:8080/api/auth/loggedIn');
+
+
   }
 
 
@@ -68,11 +84,11 @@ export class AuthService {
   }
 
   getJwtToken() {
-    return this.localstorage.retrieve('authenticationToken');
+       return this.localstorage.retrieve('authenticationToken');
   }
 
   getUserRole() {
-    return this.localstorage.retrieve('roles');
+        return this.localstorage.retrieve('roles');
   }
 
   refreshToken() {
@@ -85,6 +101,9 @@ export class AuthService {
         this.localstorage.store('authenticationToken',
           response.authenticationToken);
         this.localstorage.store('expiresAt', response.expiresAt);
+        this.loginResponse.authenticationToken=response.authenticationToken;
+        this.loginResponse.expiresAt=response.expiresAt;
+        console.log(this.loginResponse)
       }));
   }
 }

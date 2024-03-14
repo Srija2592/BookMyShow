@@ -1,8 +1,16 @@
-<button type="submit" (click)="addloc()" class="border-[1px] mt-4 ml-8 mr-4 bg-black text-white font-medium p-3 w-1/6 rounded-md hover:bg-gray-800">Add Location</button>
-<button type="submit" (click)="addmovie()" class="border-[1px] mt-4 ml-4 mr-4 bg-black text-white font-medium p-3 w-1/6 rounded-md hover:bg-gray-800">Add Movie</button>
-<button type="submit" (click)="addtheatre()" class="border-[1px] mt-4 ml-4 mr-4 bg-black text-white font-medium p-3 w-1/6 rounded-md hover:bg-gray-800">Add Theatre</button>
-<button type="submit" (click)="addseat()" class="border-[1px] mt-4 ml-4 mr-4 bg-black text-white font-medium p-3 w-1/6 rounded-md hover:bg-gray-800">Add Seat</button>
-<div *ngIf="addingLocation==true"><app-addlocation></app-addlocation></div>
-<div *ngIf="addingMovie==true"><app-addmovie></app-addmovie></div>
-<div *ngIf="addingTheatre==true"><app-addtheatre></app-addtheatre></div>
-<div *ngIf="addingSeat==true"><app-addseat></app-addseat></div>
+<div class="buttons">
+  <button type="submit" (click)="addloc()" class="add-location">
+    Add Location
+  </button>
+  <button type="submit" (click)="addmovie()" class="add-movie">
+    Add Movie
+  </button>
+  <button type="submit" (click)="addtheatre()" class="add-theatre">
+    Add Theatre
+  </button>
+  <button type="submit" (click)="addseat()" class="add-seat">Add Seat</button>
+</div>
+<div *ngIf="selectedAttribute=='location' && addingLocation==true"><app-addlocation></app-addlocation></div>
+<div *ngIf="selectedAttribute=='movie' && addingMovie==true"><app-addmovie></app-addmovie></div>
+<div *ngIf="selectedAttribute=='theatre' && addingTheatre==true"><app-addtheatre></app-addtheatre></div>
+<div *ngIf="selectedAttribute=='seat' && addingSeat==true"><app-addseat></app-addseat></div>

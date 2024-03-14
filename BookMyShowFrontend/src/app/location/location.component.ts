@@ -1,58 +1,63 @@
 import { Component, OnInit } from '@angular/core';
 import { LocationService } from '../location.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-location',
   templateUrl: './location.component.html',
-  styleUrls: ['./location.component.css']
+  styleUrls: ['./location.component.css'],
 })
-export class LocationComponent implements OnInit{
+export class LocationComponent implements OnInit {
+  locations: any;
 
-  locations:any;
+  movielist: any;
 
-  movielist:any;
+  role: string = '';
 
-
-  display:boolean=false;
-  filteredLocations:any=[];
-  constructor(private locationService:LocationService,private router:Router){
-    this.filteredLocations=locationService.getlocations();
+  display: boolean = false;
+  filteredLocations: any = [];
+  constructor(
+    private locationService: LocationService,
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.filteredLocations = locationService.getlocations();
+    this.role = authService.getUserRole();
   }
 
   ngOnInit(): void {
-    this.locationService.getlocations().subscribe((data)=>{this.locations=data,
-      console.log(this.locations);
-      if(this.locations.length==0){
-        this.display=false;
+    this.locationService.getlocations().subscribe((data) => {
+      (this.locations = data), console.log(this.locations);
+      if (this.locations.length == 0) {
+        this.display = false;
+      } else {
+        this.display = true;
       }
-      else{
-        this.display=true;
-      }}
-    )
-
+    });
   }
-  searchFound:boolean=false;
 
-  filterResults(text:string){
+  searchFound: boolean = false;
+
+  filterResults(text: string) {
     if (!text) {
       this.filteredLocations = this.locations;
     }
 
-    this.filteredLocations = this.locations.filter(
-      (loc:any) => loc?.locationName.toLowerCase().includes(text.toLowerCase())
+    this.filteredLocations = this.locations.filter((loc: any) =>
+      loc?.locationName.toLowerCase().includes(text.toLowerCase())
     );
-    if(this.filteredLocations.length!=0){
-      this.searchFound=true;
+    if (this.filteredLocations.length != 0) {
+      this.searchFound = true;
     }
-    }
-
-
-  openmovies(location:any){
-    this.movielist=location.movieList;
-    console.log(this.movielist);
-    this.router.navigateByUrl('/movie/'+location.locationName);
-    console.log(location.locationName)
   }
 
+  openmovies(location: any) {
+    this.movielist = location.movieList;
+    console.log(this.movielist);
+    if (this.role == 'ROLE_USER' && this.authService.loggedInn) {
+      this.router.navigateByUrl('/movie/' + location.locationName);
+      console.log(location.locationName);
+    }
+  }
 }

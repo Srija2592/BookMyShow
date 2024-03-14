@@ -26,9 +26,9 @@ export class AddlocationComponent implements OnInit{
   }
   addLocation(){
     this.location.location=this.locationForm.get('location')?.value;
-    this.locationService.addlocation(this.location.location).subscribe((data:any)=>{
+        this.locationService.addlocation(this.location.location).subscribe((data:any)=>{
       // this.router.navigate(['admin/adminhome/addmovie/'+this.location.location]);
-      console.log("location added");
+console.log("location added");
       this.addedlocation=true;
     },
     (error:any) => {
