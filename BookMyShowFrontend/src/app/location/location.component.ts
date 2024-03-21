@@ -13,8 +13,8 @@ export class LocationComponent implements OnInit {
 
   movielist: any;
 
-  role: string = '';
-
+  role: string[] = [];
+  isLoggedIn: boolean = false;
   display: boolean = false;
   filteredLocations: any = [];
   constructor(
@@ -27,8 +27,12 @@ export class LocationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authService.loggedInn.subscribe((data: boolean) => {
+      this.isLoggedIn = data;
+    });
+
     this.locationService.getlocations().subscribe((data) => {
-      (this.locations = data), console.log(this.locations);
+      this.locations = data;
       if (this.locations.length == 0) {
         this.display = false;
       } else {
@@ -54,10 +58,10 @@ export class LocationComponent implements OnInit {
 
   openmovies(location: any) {
     this.movielist = location.movieList;
-    console.log(this.movielist);
-    if (this.role == 'ROLE_USER' && this.authService.loggedInn) {
+
+    if (this.role[0] == 'ROLE_USER') {
       this.router.navigateByUrl('/movie/' + location.locationName);
-      console.log(location.locationName);
+    } else {
     }
   }
 }

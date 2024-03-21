@@ -11,10 +11,10 @@ export class UserService {
   constructor(private http:HttpClient) { }
 
   update(user:any,id:string):Observable<User>{
-    return this.http.put<any>('http://localhost:8080/api/user/update/'+id,user);
+    return this.http.put<User>('http://localhost:8080/api/user/update/'+id,user);
   }
 
-  getuser(username:string){
-    return this.http.get('http://localhost:8080/api/user/'+username);
+  getuser(username:string):Observable<User>{
+    return this.http.get<User>('http://localhost:8080/api/user/'+username);
   }
 }

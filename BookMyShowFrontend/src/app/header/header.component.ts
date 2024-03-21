@@ -7,6 +7,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { UpdateComponent } from '../update/update.component';
 import { UserService } from '../user.service';
 import { AuthGuard } from '../auth.guard';
+import { Store } from '@ngrx/store';
+import { LoginState, LoginStatusState } from '../auth/login.reducer';
+import { login, loginStatus } from '../auth/login.action';
+import { LoginResponse } from '../auth/login/loginresponse';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +21,7 @@ import { AuthGuard } from '../auth.guard';
 export class HeaderComponent implements OnInit {
   isLoggedIn!: boolean;
   username!: string;
-
+  loginDetails!: Observable<LoginState>;
   user: any = {
     fullname: '',
     username: '',
@@ -25,31 +30,31 @@ export class HeaderComponent implements OnInit {
     id: 0,
     bookingId: 0,
   };
-
+  loginResponse: LoginResponse = {
+    username: '',
+    authenticationToken: '',
+    expiresAt: new Date(),
+    refreshToken: '',
+    roles: [],
+  };
   constructor(
     private router: Router,
     private authservice: AuthService,
     public dialog: MatDialog,
     private userService: UserService,
     private authGuard: AuthGuard
-  ) {
-    this.username = authservice.getUserName();
-    userService.getuser(this.username).subscribe((data) => {
-      this.user = data;
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.authservice.loggedInn.subscribe((data: boolean) => {
       this.isLoggedIn = data;
-      console.log(this.isLoggedIn);
     });
+
+    console.log(this.isLoggedIn);
     this.authservice.username.subscribe(
       (data: string) => (this.username = data)
     );
-    this.authservice.isLoggedIn().subscribe((d) => {
-      this.isLoggedIn = d;
-    });
+
     this.username = this.authservice.getUserName();
   }
   logout() {
@@ -59,17 +64,16 @@ export class HeaderComponent implements OnInit {
   }
 
   update() {
-    const data = this.user;
-    this.dialog.open(UpdateComponent, {
-      data: data,
-      height: '400px',
-      width: '800px',
+    this.userService.getuser(this.username).subscribe((data) => {
+      this.dialog.open(UpdateComponent, {
+        data: data,
+        height: '400px',
+        width: '800px',
+      });
     });
   }
 
-  profile() {
-    if (this.isLoggedIn) {
-      this.router.navigateByUrl('/profile/' + this.username);
-    }
+  profile(username:string) {
+    this.router.navigateByUrl('/profile/' + username);
   }
 }

@@ -1,14 +1,30 @@
-<div *ngFor="let theatre of theatres" class="inline-block">
-  <div *ngIf="getInf==false">
-    <button class="block p-2 ml-12 text-inherit m-10 w-7/12 h-max bg-gray-300 hover:bg-blue-100" (click)="openseats(theatre.theatreName)"><strong>{{theatre.theatreName}}</strong></button>
-    <button class="block  ml-12 text-inherit m-10 w-7/12 " (click)="getInfo(theatre)"><p>get info &#8594;</p></button>
+<div class="theatre-page" *ngIf="isLoggedIn">
+  <div *ngIf="display == false">
+    <h1>No Theatres to show for selected location & movie</h1>
   </div>
-  <div *ngIf="getInf==true">
-    <p class="font-bold text-lg underline">Theatre Details are :</p>
-    <div class="bg-gray-200 m-2 p-2">
-      <p class="font-medium text-md">Ticket Price : </p><p class="font-mono">{{theatre.theatreName}}</p>
-    <p class="font-medium text-md">Ticket Price : </p><p class="font-mono">{{theatre.price}}</p>
-    <button class="block  ml-12 text-inherit m-10 w-7/12" (click)="goBack()"><p>back &larr;</p></button>
+  <div *ngIf="isLoggedIn" class="theatre-tag">
+    <div *ngFor="let theatre of theatres" class="theatre-details">
+      <div *ngIf="getInf == false" class="theatreinfo">
+        <button class="" (click)="openseats(theatre.theatreName)">
+          <strong>{{ theatre.theatreName }}</strong>
+        </button>
+        <button class="" (click)="getInfo(theatre)">
+          <p>get info &#8594;</p>
+        </button>
+      </div>
+      <div *ngIf="getInf == true" class="theatre-info">
+        <p class="">Theatre Details are :</p>
+        <div class="">
+          <p class="">Theatre Name :</p>
+          <p class="">{{ theatre.theatreName }}</p>
+          <p class="">Ticket Price :</p>
+          <p class="">{{ theatre.price }}</p>
+          <button class="" (click)="goBack()"><p>back &larr;</p></button>
+        </div>
+      </div>
     </div>
   </div>
+</div>
+<div *ngIf="!isLoggedIn" class="unauthorized-page">
+  <app-unauthorized-page></app-unauthorized-page>
 </div>

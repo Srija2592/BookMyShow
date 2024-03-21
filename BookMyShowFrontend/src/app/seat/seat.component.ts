@@ -39,6 +39,7 @@ export class SeatComponent implements OnInit{
   map=new Map();
   username:any='';
   transacid:string='';
+  isLoggedIn!: boolean;
   constructor(private seatservice:SeatService,private activatedroute:ActivatedRoute,private router:Router,private bookingService:BookingService,private authService:AuthService,private theatreService:TheatreService){
     this.location=activatedroute.snapshot.params['location'];
     this.movie=activatedroute.snapshot.params['movie'];
@@ -51,12 +52,15 @@ export class SeatComponent implements OnInit{
       seats:[],
       totalPrice:0,
       transactionId:'',
-      bookingTime:new Date()
+      bookingTime:new Date(),
+      bookingId:0
     }
 
   }
 
   ngOnInit(): void {
+
+    this.authService.loggedInn.subscribe((d) => (this.isLoggedIn = d));
     this.getseats();
     this.theatreService.getTheatre(this.theatre,this.movie,this.location).subscribe((data)=>{this.selectedTheatre=data});
   }
@@ -69,6 +73,7 @@ export class SeatComponent implements OnInit{
   }
 
   selectseat(seat:any){
+    console.log("calling seat")
     let selected:boolean=false;
     if(seat.seatStatus=='EMPTY'){
       seat.seatStatus='SELECTED';

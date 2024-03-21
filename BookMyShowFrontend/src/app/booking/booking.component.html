@@ -1,13 +1,42 @@
-<p class="font-bold text-lg underline">Booking Details are :</p>
-<div class="bg-gray-200 m-2 p-2">
-  <p class="font-medium text-md">Booking Id : </p><p class="font-mono">{{bookingId}}</p>
-  <p class="font-medium text-md">Booking Time : </p><p class="font-mono">{{booking.bookingTime}}</p>
-  <p class="font-medium text-md">Location Name : </p><p class="font-mono">{{booking.locationName}}</p>
-  <div class="inline-block"><p class="font-medium text-md">Movie Name : </p><p class="font-mono">{{booking.movieName}}</p></div>
-  <p class="font-medium text-md">Theatre Name : </p><p class="font-mono">{{booking.theatreName}}</p>
-  <p class="font-medium text-md">Transaction Id  : </p><p class="font-mono">{{booking.transactionId}}</p>
-  <p class="font-medium text-md">Total Price paid : </p><p class="font-mono">{{booking.totalPrice}}</p>
-<p class="font-medium text-md">Booked Seats are : </p><div *ngFor="let seat of seats" class="font-medium font-mono text-md inline-block">
-    <p>{{seat}} &nbsp;&nbsp; </p>
+<div *ngIf="isLoggedIn" class="page">
+  <p class="heading">Booking Details are :</p>
+  <div class="elements">
+    <div class="attribute">
+      <span class="tag">Booking Id :</span><span>{{ bookingId }}</span>
+    </div>
+    <div class="attribute">
+      <span class="tag">Booking Time :</span
+      ><span>{{ booking.bookingTime }}</span>
+    </div>
+    <div class="attribute">
+      <span class="tag">Location Name :</span
+      ><span>{{ booking.locationName }}</span>
+    </div>
+
+    <div class="attribute">
+      <span class="tag">Movie Name :</span><span>{{ booking.movieName }}</span>
+    </div>
+
+    <div class="attribute">
+      <span class="tag">Theatre Name :</span
+      ><span>{{ booking.theatreName }}</span>
+    </div>
+    <div class="attribute">
+      <span class="tag">Transaction Id :</span
+      ><span>{{ booking.transactionId }}</span>
+    </div>
+    <div class="attribute">
+      <span class="tag">Total Price paid :</span
+      ><span>{{ booking.totalPrice }}</span>
+    </div>
+    <div class="attribute">
+      <span class="tag">Booked Seats are :</span>
+      <div *ngFor="let seat of seats">
+        <span class="attribute">{{ seat }} &nbsp;&nbsp;</span>
+      </div>
+    </div>
   </div>
+</div>
+<div *ngIf="!isLoggedIn" class="unauthorized-page">
+  <app-unauthorized-page></app-unauthorized-page>
 </div>

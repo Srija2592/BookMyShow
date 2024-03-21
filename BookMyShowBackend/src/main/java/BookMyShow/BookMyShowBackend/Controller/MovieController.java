@@ -32,7 +32,6 @@ public class MovieController {
     }
 
     @GetMapping("moviebyname/{locationName}")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     public ResponseEntity<List<Movie>> getMovieBymovieName(@PathVariable String locationName){
         return ResponseEntity.status(HttpStatus.OK).body(movieService.getMovieBylocationName(locationName));
     }

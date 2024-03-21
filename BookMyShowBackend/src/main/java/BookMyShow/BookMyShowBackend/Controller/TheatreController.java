@@ -28,13 +28,11 @@ public class TheatreController {
     }
 
     @GetMapping("theatres/{movieName}/{locationName}")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     public ResponseEntity<List<Theatre>> theatrelist(@PathVariable String movieName,@PathVariable String locationName){
         return ResponseEntity.status(HttpStatus.OK).body(theatreService.alltheatresbymovielocation(movieName,locationName));
     }
 
     @GetMapping("bytheatre/{theatre}/{movie}/{location}")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     public ResponseEntity<Theatre> getTheatre(@PathVariable String theatre,@PathVariable String movie,@PathVariable String location){
         return ResponseEntity.status(HttpStatus.OK).body(theatreService.getTheatreByName(theatre,movie,location));
     }

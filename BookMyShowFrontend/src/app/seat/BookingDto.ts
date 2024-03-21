@@ -1,4 +1,5 @@
 export interface Booking{
+  bookingId: number;
   locationName:string;
   movieName:string;
   theatreName:string;

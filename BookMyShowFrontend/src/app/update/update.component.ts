@@ -4,6 +4,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../user.service';
 import { AuthService } from '../auth.service';
+import { Store } from '@ngrx/store';
+import { UserState } from '../profile/user.reducer';
+import { userDetails } from '../profile/user.action';
 
 @Component({
   selector: 'app-update',
@@ -18,7 +21,7 @@ export class UpdateComponent implements OnInit{
 
   user:any;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: User,public dialogref:MatDialogRef<UpdateComponent>,private userservice:UserService,private authService:AuthService){
+  constructor(@Inject(MAT_DIALOG_DATA) public data: User,public dialogref:MatDialogRef<UpdateComponent>,private userservice:UserService,private authService:AuthService,private store:Store<{userState:UserState}>){
     this.updatedata={
       username:data.username,
       mobile:data.mobile,
@@ -35,8 +38,8 @@ export class UpdateComponent implements OnInit{
     this.updateuserform=new FormGroup({
 
       username:new FormControl(this.authService.getUserName(),Validators.required),
-      fullname:new FormControl('',Validators.required),
-      mobile:new FormControl('',Validators.required),
+      fullname:new FormControl(this.data.fullname,Validators.required),
+      mobile:new FormControl(this.data.mobile,Validators.required),
       roles:new FormControl(this.data.roles,Validators.required),
       email:new FormControl(this.data.email,Validators.required)
 
@@ -55,7 +58,7 @@ export class UpdateComponent implements OnInit{
         console.log(this.updatedata);
         this.userservice.update(this.updatedata,this.updatedata.username).subscribe(data=>{this.user=data,
           this.submitted=true,
-          console.log(this.user)
+          this.store.dispatch(userDetails({userResponse:data}))
           this.dialogref.close();
 
         })

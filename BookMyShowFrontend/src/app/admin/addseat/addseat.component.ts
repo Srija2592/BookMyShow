@@ -40,7 +40,6 @@ export class AddseatComponent implements OnInit{
   onSelectMovie(e:any){
     var theatre=e.target.value;
     this.seatDto.movieName=theatre;
-    console.log(this.seatDto.movieName);
     this.theatreService.theatresbymoviename(this.seatDto.movieName,this.seatDto.locationName).subscribe((data)=>{this.theatres=data,
       console.log(this.theatres)});
 
@@ -48,7 +47,6 @@ export class AddseatComponent implements OnInit{
   onSelectlocation(e:any){
     var loc=e.target.value;
     this.seatDto.locationName=loc;
-    console.log(this.seatDto.locationName);
     this.movieService.allmoviesbylocation(this.seatDto.locationName).subscribe((data)=>{this.movies1=data,console.log(this.movies1)});
   }
   onSelectTheatre(e:any){
@@ -60,7 +58,6 @@ export class AddseatComponent implements OnInit{
 
   addSeats(){
     this.noofseats=this.seatForm.get('noofseats')?.value;
-    console.log(this.noofseats);
     for(let i=0;i<this.noofseats;i++){
       this.seatService.addseat(this.seatDto).subscribe((data)=>{console.log("seat added"),this.seatadded=true});}
   }

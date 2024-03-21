@@ -1,12 +1,36 @@
-<div *ngFor="let seat of seats" class="w-1/6 inline-block">
-  <div><p *ngIf="seat.seatStatus=='BOOKED'" [ngStyle]="{'color': 'red'}">
-    <button class="seat p-2 ml-14 text-inherit m-4 h-2/3   bg-red-300 hover:bg-blue-100" (click)="selectseat(seat)"><strong>{{seat.seatId}}</strong></button>
-  </p></div>
-  <div><p *ngIf="seat.seatStatus=='EMPTY'" [ngStyle]="{'color': 'green'}">
-    <button class="seat p-2 ml-4 text-inherit m-4 bg-green-300 hover:bg-blue-100" (click)="selectseat(seat)"><strong>{{seat.seatId}}</strong></button>
-  </p></div>
-  <div><p *ngIf="seat.seatStatus=='SELECTED'" [ngStyle]="{'color': 'blue'}">
-    <button class="seat p-2 ml-14 text-inherit m-4   bg-blue-300 hover:bg-blue-100" (click)="selectseat(seat)"><strong>{{seat.seatId}}</strong></button>
-  </p></div>
+<div class="seat-page" *ngIf="isLoggedIn">
+  <div *ngFor="let seat of seats" class="seat1">
+    <button
+      [ngClass]="{
+        red: seat.seatStatus == 'BOOKED',
+        green: seat.seatStatus == 'EMPTY',
+        blue: seat.seatStatus == 'SELECTED'
+      }"
+      (click)="selectseat(seat)"
+    >
+      <strong>{{ seat.seatId }}</strong>
+    </button>
+
+    <!-- <div class="seat1">
+      <p *ngIf="seat.seatStatus == 'EMPTY'" [ngStyle]="{ color: 'green' }">
+        <button class="seat" (click)="selectseat(seat)">
+          <strong>{{ seat.seatId }}</strong>
+        </button>
+      </p>
+    </div>
+    <div class="seat1">
+      <p *ngIf="seat.seatStatus == 'SELECTED'" [ngStyle]="{ color: 'blue' }">
+        <button class="seat" (click)="selectseat(seat)">
+          <strong>{{ seat.seatId }}</strong>
+        </button>
+      </p>
+    </div> -->
+  </div>
 </div>
-<button class="block rounded-xl p-2 w-16 h-10 ml-12 text-inherit m-10  bg-gray-300 hover:bg-blue-100 justify-items-center" (click)="book(selectedSeats)">Book</button>
+<div class="book" *ngIf="isLoggedIn">
+  <button class="" (click)="book(selectedSeats)">Book</button>
+</div>
+
+<div *ngIf="!isLoggedIn" class="unauthorized-page">
+  <app-unauthorized-page></app-unauthorized-page>
+</div>

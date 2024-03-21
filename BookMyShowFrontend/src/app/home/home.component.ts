@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { LoginState, LoginStatusState } from '../auth/login.reducer';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -8,18 +11,29 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  role!: string;
-
-  constructor(private authService: AuthService, private router: Router) {}
-
+  role!: string[];
+  isLoggedIn!: boolean;
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private store: Store<{ loginState: LoginState }>,
+    private store1: Store<{ loginStatusState: LoginStatusState }>
+  ) {}
   // if user is admin then redirect to admin module
   ngOnInit(): void {
+    this.authService.loggedInn.subscribe((d) => {
+      this.isLoggedIn = d;
+    });
+
     this.role = this.authService.getUserRole();
-    console.log(this.role);
-    if (this.role == 'ROLE_ADMIN' && this.authService.loggedInn) {
+    if (this.role[0] == 'ROLE_ADMIN' && this.authService.isLoggedIn()) {
       this.router.navigate(['/admin']);
-    } else if (this.role == 'ROLE_USER' &&  this.authService.loggedInn) {
+    } else if (this.role[0] == 'ROLE_USER' && this.authService.isLoggedIn()) {
       this.router.navigate(['/location']);
+    } else if (this.authService.isLoggedIn()) {
+      this.router.navigate(['']);
+    } else if(!this.authService.isLoggedIn()){
+      this.router.navigate(['/unauthorized']);
     }
   }
 }

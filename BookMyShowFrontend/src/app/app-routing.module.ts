@@ -10,17 +10,19 @@ import { SeatComponent } from './seat/seat.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BookingComponent } from './booking/booking.component';
 import { AuthGuard } from './auth.guard';
+import { UnauthorizedPageComponent } from './unauthorized-page/unauthorized-page.component';
 
 const routes: Routes = [
   { path: 'sign-up', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: '', component: HomeComponent },
+  { path: 'unauthorized', component: UnauthorizedPageComponent },
   {
     path: 'location',
     component: LocationComponent,
     canActivate: [AuthGuard],
     data: {
-      role: 'ROLE_USER',
+      role: 'ROLE_USER'
     },
   },
   {

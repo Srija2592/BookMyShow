@@ -1,0 +1,30 @@
+.unauthorized-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+}
+.page {
+  background-color: #f1f1f1;
+  width: 80%;
+  margin:2rem;
+  .heading {
+    text-align: center;
+    font-weight: bold;
+  }
+  .elements{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .attribute{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 0.2rem;
+      .tag{
+        font-weight: 500;
+        margin-right: 0.2rem;
+      }
+    }
+  }
+}

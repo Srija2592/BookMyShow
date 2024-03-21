@@ -1,0 +1,30 @@
+.unauthorized-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+}
+.theatre-tag {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 2rem;
+  .theatre-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 1rem;
+    .theatreinfo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 1rem;
+      button {
+        margin: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+}

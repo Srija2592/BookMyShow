@@ -1,24 +1,56 @@
-<div class="flex justify-center p-4">
-  <div *ngIf="display==true"><input
-    type="text"
-    class="p-2 w-2/4 bg-white border-[1px] border-gray-300 rounded-md" #filter
+<div *ngIf="isLoggedIn && role[0]=='ROLE_USER'">
+  <div class="moviepage">
+    <div  class="search" *ngIf="display == true">
+      <input
+        type="text"
+        class=""
+        #filter
+      />&nbsp;&nbsp;
+      <button
+        class="search-button"
+        type="button"
+        (click)="filterResults(filter.value)"
+      >
+        Search
+      </button>
+    </div>
+    <div *ngIf="display == false">
+      <h1>No Movies to show for selected location</h1>
+    </div>
+  </div>
+  <div *ngIf="searchFound == true" class="moviedetails">
+    <div class="movieinfo" *ngFor="let loca of filteredMovies">
+      <img
+        src="{{ loca.movieImage }}"
+        class=""
+      />
+      <button
+        class=""
+        (click)="opentheatres(loca.movieName)"
+      >
+        <strong>{{ loca.movieName }}</strong>
+      </button>
+    </div>
+  </div>
+  <div *ngIf="searchFound == false" class="moviedetails" style="display: flex; flex-direction: row;margin: 1rem;">
 
-  />&nbsp;&nbsp;
-  <button class="primary bg-blue-300 p-2 border-spacing-2 hover:bg-slate-300" type="button" (click)="filterResults(filter.value)">Search</button>
-  </div>
-  <div *ngIf="display==false">
-    <h1>No Movies to show for selected location</h1>
+    <div class="movie" *ngFor="let movie of movies" style="display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;">
+      <img
+        src="{{ movie.movieImage }}"
+        class=""
+      />
+      <button
+        class=""
+        (click)="opentheatres(movie.movieName)"
+      >
+        <strong>{{ movie.movieName }}</strong>
+      </button>
+    </div>
   </div>
 </div>
-<div *ngIf="searchFound==true">
-  <div *ngFor="let loca of filteredMovies">
-    <img src="{{loca.movieImage}}" class="block p-2 ml-12 text-inherit m-6 w-1/4 h-1/5">
-    <button class="block p-6 text-inherit m-2  ml-12 w-1/4 h-max bg-gray-300  hover:bg-blue-100" (click)="opentheatres(loca.movieName)"><strong>{{loca.movieName}}</strong></button>
-  </div>
-</div>
-<div *ngIf="searchFound==false">
-  <div *ngFor="let movie of movies" class="inline-block ml-5 mr-5">
-  <img src="{{movie.movieImage}}" class="block p-2 ml-12 text-inherit  m-6 w-7/12 h-1/5">
-  <button class="block p-2 ml-12 text-inherit m-6 w-7/12 h-max bg-gray-300 hover:bg-blue-100" (click)="opentheatres(movie.movieName)"><strong>{{movie.movieName}}</strong></button>
-  </div>
+<div *ngIf="!isLoggedIn" class="unauthorized-page">
+  <app-unauthorized-page></app-unauthorized-page>
 </div>

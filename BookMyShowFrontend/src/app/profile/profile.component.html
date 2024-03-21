@@ -1,11 +1,28 @@
-<h1 class=" m-2 p-2 text-center font-bold bg-amber-50">Profile</h1>
-<p  class="font-semibold">Full Name : </p><p class="font-mono">{{user.fullname}}</p>
-<br><br><div *ngIf="noofbookings!=0">
-  <div *ngFor="let booking of bookings">
-    <a href="/booking/{{booking.bookingId}}" class="text-center font-semibold p-2 m-2">Booking Id : {{booking.bookingId}}</a><br>
+<div *ngIf="username">
+  <div class="profile">
+    <h1 class="profile-header">Profile</h1>
+    <span class="profile-property">Full Name :</span>
+    <span class="property-value">{{ user.fullname }}</span>
+    <br /><br />
+    <div *ngIf="noofbookings != 0">
+      <div *ngFor="let booking of bookings">
+        <button class="profile-property" (click)="openBooking(booking)">
+          Booking Id : {{ booking.bookingId }}</button
+        ><br />
+      </div>
+    </div>
+    <div *ngIf="noofbookings == 0 && open == true">
+      <h2><strong>No bookings so far from this account.</strong></h2>
+    </div>
+    <button
+      *ngIf="open == false && role[0] == 'ROLE_USER'"
+      (click)="allbookings(username)"
+      class="button"
+    >
+      My Bookings
+    </button>
   </div>
 </div>
-<div *ngIf="noofbookings==0 && open==true">
-  <h2><strong>No bookings so far from this account.</strong></h2>
+<div *ngIf="!username" class="unauthorized-page">
+  <app-unauthorized-page></app-unauthorized-page>
 </div>
-<button *ngIf="open==false" (click)="allbookings(username)" class="bg-gray-300 p-2 m-2 text-center justify-center font-semibold">My Bookings</button>

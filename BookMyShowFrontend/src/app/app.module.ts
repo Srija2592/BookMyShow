@@ -23,6 +23,10 @@ import { UpdateComponent } from './update/update.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BookingComponent } from './booking/booking.component';
 import { RouterModule } from '@angular/router';
+import { StoreModule } from '@ngrx/store';
+import { LoginReducer, LoginStatusReducer } from './auth/login.reducer';
+import { UserReducer } from './profile/user.reducer';
+import { UnauthorizedPageComponent } from './unauthorized-page/unauthorized-page.component';
 
 
 @NgModule({
@@ -38,7 +42,8 @@ import { RouterModule } from '@angular/router';
     SeatComponent,
     UpdateComponent,
     ProfileComponent,
-    BookingComponent
+    BookingComponent,
+    UnauthorizedPageComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +56,8 @@ import { RouterModule } from '@angular/router';
     ToastrModule.forRoot(),
     MatMenuModule,
     MatDialogModule,
-    RouterModule.forRoot([])
+    RouterModule.forRoot([]),
+    StoreModule.forRoot({loginState:LoginReducer,userState:UserReducer,loginStatusState:LoginStatusReducer})
   ],
   providers: [{provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,
