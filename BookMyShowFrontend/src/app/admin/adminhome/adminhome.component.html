@@ -1,4 +1,4 @@
-<div class="buttons">
+<div class="buttons" *ngIf="isLoggedIn">
   <button type="submit" (click)="addloc()" class="add-location">
     Add Location
   </button>
@@ -10,7 +10,18 @@
   </button>
   <button type="submit" (click)="addseat()" class="add-seat">Add Seat</button>
 </div>
-<div *ngIf="selectedAttribute=='location' && addingLocation==true"><app-addlocation></app-addlocation></div>
-<div *ngIf="selectedAttribute=='movie' && addingMovie==true"><app-addmovie></app-addmovie></div>
-<div *ngIf="selectedAttribute=='theatre' && addingTheatre==true"><app-addtheatre></app-addtheatre></div>
-<div *ngIf="selectedAttribute=='seat' && addingSeat==true"><app-addseat></app-addseat></div>
+<div *ngIf="selectedAttribute == 'location' && addingLocation == true">
+  <app-addlocation></app-addlocation>
+</div>
+<div *ngIf="selectedAttribute == 'movie' && addingMovie == true">
+  <app-addmovie></app-addmovie>
+</div>
+<div *ngIf="selectedAttribute == 'theatre' && addingTheatre == true">
+  <app-addtheatre></app-addtheatre>
+</div>
+<div *ngIf="selectedAttribute == 'seat' && addingSeat == true">
+  <app-addseat></app-addseat>
+</div>
+<div *ngIf="isLoggedIn == false" class="unauthorized-page">
+  <app-unauthorized-page></app-unauthorized-page>
+</div>

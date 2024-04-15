@@ -14,8 +14,8 @@ export class LocationComponent implements OnInit {
   movielist: any;
 
   role: string[] = [];
-  isLoggedIn: boolean = false;
-  display: boolean = false;
+  isLoggedIn: any = undefined;
+  display: any = undefined;
   filteredLocations: any = [];
   constructor(
     private locationService: LocationService,

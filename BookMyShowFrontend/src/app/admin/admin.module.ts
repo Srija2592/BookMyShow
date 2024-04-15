@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AdminRoutingModule } from './admin-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { UnauthorizedPageComponent } from '../unauthorized-page/unauthorized-page.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
     AdminhomeComponent,
     AddmovieComponent,
     AddtheatreComponent,
-    AddseatComponent
+    AddseatComponent,
+    UnauthorizedPageComponent
   ],
   imports: [
     HttpClientModule,

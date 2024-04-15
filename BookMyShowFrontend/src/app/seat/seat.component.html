@@ -31,6 +31,6 @@
   <button class="" (click)="book(selectedSeats)">Book</button>
 </div>
 
-<div *ngIf="!isLoggedIn" class="unauthorized-page">
+<div *ngIf="isLoggedIn==false" class="unauthorized-page">
   <app-unauthorized-page></app-unauthorized-page>
 </div>

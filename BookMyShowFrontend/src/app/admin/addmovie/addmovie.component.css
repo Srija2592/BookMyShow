@@ -33,4 +33,10 @@
     margin-left: 8rem;
     margin-top: 2rem;
   }
+  select{
+    width: 6rem;
+  }
+  label{
+    font-weight: 600;
+  }
 }

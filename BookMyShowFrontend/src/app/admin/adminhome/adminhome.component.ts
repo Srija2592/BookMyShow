@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminService } from 'src/app/admin.service';
+import { AuthService } from 'src/app/auth.service';
 import { LocationService } from 'src/app/location.service';
 
 @Component({
@@ -14,12 +15,16 @@ export class AdminhomeComponent implements OnDestroy {
   addingTheatre:boolean=false;
   addingSeat:boolean=false;
   selectedAttribute: any;
-  constructor(private router:Router,private adminService:AdminService) {
+  isLoggedIn:any=undefined;
+  constructor(private router:Router,private adminService:AdminService,private authService:AuthService) {
 
   }
 
   ngOnInit(): void {
     this.adminService.selectedAttribute.subscribe((data)=>{this.selectedAttribute=data;console.log(this.selectedAttribute)});
+    this.authService.loggedInn.subscribe((d) => {
+      this.isLoggedIn = d;
+    });
   }
   addloc(){
     this.adminService.selectedAttribute.next('location');

@@ -11,9 +11,9 @@ import { AuthService } from '../auth.service';
 export class TheatreComponent implements OnInit {
 
   role:string[]=[];
-  isLoggedIn:boolean=false;
+  isLoggedIn:any=undefined;
   movie:any;
-  display:boolean=false;
+  display:any=undefined;
   location:any;
 
   theatres:any;

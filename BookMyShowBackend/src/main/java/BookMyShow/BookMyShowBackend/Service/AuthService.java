@@ -11,10 +11,12 @@ import BookMyShow.BookMyShowBackend.Security.JwtProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,6 +57,11 @@ public class AuthService {
         Authentication authenticate = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                         loginRequest.getPassword()));
+//        SecurityContext context = SecurityContextHolder.createEmptyContext();
+//        Authentication authentication =
+//                new TestingAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword(), "ROLE_USER");
+//        context.setAuthentication(authentication);
+//        SecurityContextHolder.setContext(context);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
         Set<String> roles = authenticate.getAuthorities().stream()

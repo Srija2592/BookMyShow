@@ -12,7 +12,7 @@ import { map } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
   role!: string[];
-  isLoggedIn!: boolean;
+  isLoggedIn: any=undefined;
   constructor(
     private authService: AuthService,
     private router: Router,

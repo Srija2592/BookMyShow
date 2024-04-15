@@ -14,7 +14,7 @@ export class MovieComponent implements OnInit {
   movies: any;
   role:string[]=[];
   filteredMovies: any = [];
-  isLoggedIn: boolean = false;
+  isLoggedIn: any = undefined;
   constructor(
     private movieService: MovieService,
     private act: ActivatedRoute,
@@ -29,7 +29,7 @@ export class MovieComponent implements OnInit {
     this.filteredMovies = movieService.allmoviesbylocation(this.location);
   }
 
-  display: boolean = false;
+  display: any = undefined;
   ngOnInit(): void {
     this.authService.loggedInn.subscribe((d) => (this.isLoggedIn = d));
     this.getmoviesbylocation();

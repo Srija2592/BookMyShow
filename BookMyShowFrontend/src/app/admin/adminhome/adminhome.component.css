@@ -4,3 +4,9 @@
   justify-content: space-around;
   margin: 2rem;
 }
+.unauthorized-page{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+}
