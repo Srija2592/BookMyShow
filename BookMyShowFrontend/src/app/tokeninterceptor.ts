@@ -17,7 +17,7 @@ import {
 } from 'rxjs';
 
 import { LoginResponse } from './auth/login/loginresponse';
-import { AuthService } from './auth.service';
+import { AuthService } from './shared/auth.service';
 
 @Injectable({
   providedIn: 'root',

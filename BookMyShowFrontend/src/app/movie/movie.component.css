@@ -11,18 +11,10 @@
   .search {
     display: flex;
     margin: 2rem;
-
   }
-  .moviedetails {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 1rem;
-    .movie {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 1rem;
-    }
+
+  .ele {
+    padding: 10px;
+    margin: 5px;
   }
 }

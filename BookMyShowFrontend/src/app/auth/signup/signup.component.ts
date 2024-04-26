@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/auth.service';
+import { AuthService } from 'src/app/shared/auth.service';
 
 
 @Component({

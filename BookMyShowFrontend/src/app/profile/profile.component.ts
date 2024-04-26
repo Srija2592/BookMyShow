@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../booking.service';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../shared/auth.service';
 import { UserService } from '../user.service';
 import { User } from '../user';
 import { Store, select } from '@ngrx/store';
@@ -73,6 +73,7 @@ export class ProfileComponent implements OnInit {
         (this.bookings = data),
           (this.open = true),
           (this.noofbookings = this.bookings.length);
+          this.router.navigateByUrl('/booking/'+username);
       });
   }
   openBooking(booking:Booking){

@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { AdminService } from 'src/app/admin.service';
-import { AuthService } from 'src/app/auth.service';
+import { AdminService } from 'src/app/admin/admin.service';
+import { AuthService } from 'src/app/shared/auth.service';
 import { LocationService } from 'src/app/location.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { LocationService } from 'src/app/location.service';
   templateUrl: './adminhome.component.html',
   styleUrls: ['./adminhome.component.css']
 })
-export class AdminhomeComponent implements OnDestroy {
+export class AdminhomeComponent  {
   addingLocation:boolean=false;
   addingMovie:boolean=false;
   addingTheatre:boolean=false;
@@ -23,6 +23,9 @@ export class AdminhomeComponent implements OnDestroy {
   ngOnInit(): void {
     this.adminService.selectedAttribute.subscribe((data)=>{this.selectedAttribute=data;console.log(this.selectedAttribute)});
     this.authService.loggedInn.subscribe((d) => {
+      this.isLoggedIn = d;
+    });
+    this.authService.isLoggedIn().subscribe((d) => {
       this.isLoggedIn = d;
     });
   }
@@ -45,9 +48,9 @@ export class AdminhomeComponent implements OnDestroy {
   navigatetolocation(){
     console.log("working")
     this.router.navigate(['/admin/adminhome/addlocation']);
-    console.log("done");
   }
-  ngOnDestroy() {
-    this.adminService.selectedAttribute.unsubscribe();
- }
+//   ngOnDestroy() {
+//     this.adminService.selectedAttribute.unsubscribe();
+//     this.authService.loggedInn.unsubscribe();
+//  }
 }

@@ -1,29 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import {WebcamModule } from 'ngx-webcam';
+import { WebcamModule } from 'ngx-webcam';
 import { AddlocationComponent } from './addlocation/addlocation.component';
 import { AdminhomeComponent } from './adminhome/adminhome.component';
 import { AddmovieComponent } from './addmovie/addmovie.component';
 import { AddtheatreComponent } from './addtheatre/addtheatre.component';
 import { AddseatComponent } from './addseat/addseat.component';
-import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { AdminRoutingModule } from './admin-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { UnauthorizedPageComponent } from '../unauthorized-page/unauthorized-page.component';
-
+import { SharedModule } from '../shared/shared.module';
+import { AppModule } from '../app.module';
+import { AuthService } from '../shared/auth.service';
+import { AppRoutingModule } from '../app-routing.module';
 
 @NgModule({
   declarations: [
-
     AddlocationComponent,
     AdminhomeComponent,
     AddmovieComponent,
     AddtheatreComponent,
     AddseatComponent,
-    UnauthorizedPageComponent
   ],
   imports: [
     HttpClientModule,
@@ -31,7 +29,8 @@ import { UnauthorizedPageComponent } from '../unauthorized-page/unauthorized-pag
     FormsModule,
     ReactiveFormsModule,
     AdminRoutingModule,
-    WebcamModule
-  ]
+    WebcamModule,
+    SharedModule
+  ],
 })
-export class AdminModule { }
+export class AdminModule {}

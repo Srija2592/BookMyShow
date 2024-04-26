@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieService } from '../movie.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../shared/auth.service';
+import { Store } from '@ngrx/store';
+import { MovieState } from './movie.reducer';
+import { clearmovie, movie, movieSuccess } from './movie.action';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-movie',
@@ -15,11 +19,13 @@ export class MovieComponent implements OnInit {
   role:string[]=[];
   filteredMovies: any = [];
   isLoggedIn: any = undefined;
+  private destroy$:Subject<void>=new Subject();
   constructor(
     private movieService: MovieService,
     private act: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private store:Store<MovieState>
   ) {
     this.role = authService.getUserRole();
     authService.loggedInn.subscribe((d) => (this.isLoggedIn = d));
@@ -33,11 +39,11 @@ export class MovieComponent implements OnInit {
   ngOnInit(): void {
     this.authService.loggedInn.subscribe((d) => (this.isLoggedIn = d));
     this.getmoviesbylocation();
-  }
+    this.authService.isLoggedIn().subscribe((d) => {
+      this.isLoggedIn = d;
+    });
 
-  getmoviesbylocation() {
-    this.movieService.allmoviesbylocation(this.location).subscribe((data) => {
-      this.movies = data;
+    this.store.select('movies').subscribe(d=>{this.movies=d.movies;
       if (this.movies.length == 0) {
         this.display = false;
       } else {
@@ -46,6 +52,20 @@ export class MovieComponent implements OnInit {
     });
   }
 
+  getmoviesbylocation() {
+    this.movieService.allmoviesbylocation(this.location).pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      this.store.dispatch(movieSuccess({movies:data}));
+    });
+    // this.store.dispatch(movie({location:this.location}));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.store.dispatch(clearmovie({
+      movies:[]
+    }));
+  }
   opentheatres(movie: any) {
     this.router.navigateByUrl('/theatre/' + this.location + '/' + movie);
   }
@@ -63,5 +83,12 @@ export class MovieComponent implements OnInit {
       this.searchFound = true;
     }
     text = '';
+  }
+  chunkedArray(arr:any, chunkSize:number) {
+    const chunks = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      chunks.push(arr.slice(i, i + chunkSize));
+    }
+    return chunks;
   }
 }

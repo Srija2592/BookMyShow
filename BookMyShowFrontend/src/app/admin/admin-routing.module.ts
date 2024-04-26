@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminhomeComponent } from './adminhome/adminhome.component';
-import { AuthGuard } from '../auth.guard';
+import { AuthGuard } from '../shared/auth.guard';
 import { AddlocationComponent } from './addlocation/addlocation.component';
 import { AddmovieComponent } from './addmovie/addmovie.component';
 import { AddtheatreComponent } from './addtheatre/addtheatre.component';
@@ -12,10 +12,10 @@ const routes: Routes = [
   {
     path:'',
     pathMatch:'full',
-    redirectTo:'adminhome'
+    redirectTo:'admin'
   },
   {
-    path:'adminhome',
+    path:'admin',
     component:AdminhomeComponent,
 
     // children:[

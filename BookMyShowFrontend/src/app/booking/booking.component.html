@@ -1,42 +1,12 @@
-<div *ngIf="isLoggedIn" class="page">
-  <p class="heading">Booking Details are :</p>
-  <div class="elements">
-    <div class="attribute">
-      <span class="tag">Booking Id :</span><span>{{ bookingId }}</span>
-    </div>
-    <div class="attribute">
-      <span class="tag">Booking Time :</span
-      ><span>{{ booking.bookingTime }}</span>
-    </div>
-    <div class="attribute">
-      <span class="tag">Location Name :</span
-      ><span>{{ booking.locationName }}</span>
-    </div>
-
-    <div class="attribute">
-      <span class="tag">Movie Name :</span><span>{{ booking.movieName }}</span>
-    </div>
-
-    <div class="attribute">
-      <span class="tag">Theatre Name :</span
-      ><span>{{ booking.theatreName }}</span>
-    </div>
-    <div class="attribute">
-      <span class="tag">Transaction Id :</span
-      ><span>{{ booking.transactionId }}</span>
-    </div>
-    <div class="attribute">
-      <span class="tag">Total Price paid :</span
-      ><span>{{ booking.totalPrice }}</span>
-    </div>
-    <div class="attribute">
-      <span class="tag">Booked Seats are :</span>
-      <div *ngFor="let seat of seats">
-        <span class="attribute">{{ seat }} &nbsp;&nbsp;</span>
-      </div>
-    </div>
-  </div>
-</div>
-<div *ngIf="!isLoggedIn" class="unauthorized-page">
-  <app-unauthorized-page></app-unauthorized-page>
+<div style="height: 400px; width: 100%;padding: 1rem;" class="ag-theme-alpine">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [columnDefs]="colDefs"
+    [defaultColDef]="defaultColDef"
+    [autoGroupColumnDef]="autoGroupColumnDef"
+    [rowData]="bookings"
+    [class]="themeClass"
+    (gridReady)="onGridReady($event)"
+    (rowClicked)="rowClicked($event)"
+  ></ag-grid-angular>
 </div>

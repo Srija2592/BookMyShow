@@ -6,6 +6,27 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .row {
+      display: flex;
+    }
+
+    .col {
+      margin: 0.6rem;
+    }
+
+    .ele {
+      padding: 10px;
+      margin: 5px;
+    }
+
     .search {
       display: flex;
       margin: 2rem;
@@ -14,18 +35,6 @@
       }
     }
 
-  }
-    .locations{
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      .locationname{
-        display: flex;
-        justify-content: space-between;
-        margin: 1rem;
-      }
-    }
   }
   .unauthorized-page{
     display: flex;

@@ -1,4 +1,4 @@
-<div class="location-page" *ngIf="isLoggedIn && role[0]=='ROLE_USER'">
+<div class="location-page" *ngIf="isLoggedIn && role[0] == 'ROLE_USER'">
   <div class="location">
     <div class="search" *ngIf="display == true">
       <input
@@ -19,27 +19,25 @@
       <h1>No locations to show.</h1>
     </div>
   </div>
-  <div *ngIf="searchFound == true">
-    <div *ngFor="let loca of filteredLocations">
-      <button
-        class=""
-        (click)="openmovies(loca)"
-      >
-        <strong>{{ loca.locationName }}</strong>
-      </button>
+  <div class="container" *ngIf="searchFound == true">
+    <div class="row" *ngFor="let loca of chunkedArray(filteredLocations, 7)">
+      <div class="col" *ngFor="let item of loca">
+        <button class="ele" (click)="openmovies(item)">
+          <strong>{{ item.locationName }}</strong>
+        </button>
+      </div>
     </div>
   </div>
-  <div class="locations" *ngIf="searchFound == false">
-    <div *ngFor="let location of locations" class="locationname">
-      <button
-        class="movie-button"
-        (click)="openmovies(location)"
-      >
-        <strong>{{ location.locationName }}</strong>
-      </button>
+  <div class="container" *ngIf="searchFound == false">
+    <div class="row" *ngFor="let loca of chunkedArray(locations, 7)">
+      <div class="col" *ngFor="let item of loca">
+        <button class="movie-button" (click)="openmovies(item)">
+          <strong>{{ item.locationName }}</strong>
+        </button>
+      </div>
     </div>
   </div>
-</div>
-<div *ngIf="isLoggedIn==false" class="unauthorized-page">
-  <app-unauthorized-page></app-unauthorized-page>
+  <div *ngIf="isLoggedIn == false" class="unauthorized-page">
+    <app-unauthorized-page></app-unauthorized-page>
+  </div>
 </div>

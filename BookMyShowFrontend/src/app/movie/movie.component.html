@@ -1,11 +1,7 @@
-<div *ngIf="isLoggedIn && role[0]=='ROLE_USER'">
+<div *ngIf="isLoggedIn && role[0] == 'ROLE_USER'">
   <div class="moviepage">
-    <div  class="search" *ngIf="display == true">
-      <input
-        type="text"
-        class=""
-        #filter
-      />&nbsp;&nbsp;
+    <div class="search" *ngIf="display == true">
+      <input type="text" class="" #filter />&nbsp;&nbsp;
       <button
         class="search-button"
         type="button"
@@ -18,39 +14,32 @@
       <h1>No Movies to show for selected location</h1>
     </div>
   </div>
-  <div *ngIf="searchFound == true" class="moviedetails">
-    <div class="movieinfo" *ngFor="let loca of filteredMovies">
-      <img
-        src="{{ loca.movieImage }}"
-        class=""
-      />
-      <button
-        class=""
-        (click)="opentheatres(loca.movieName)"
-      >
-        <strong>{{ loca.movieName }}</strong>
-      </button>
+  <div *ngIf="searchFound == true" class="container" style=" display: flex;
+  flex-direction: column;
+  align-items: center;">
+    <div class="row" style="display: flex;" *ngFor="let loca of chunkedArray(filteredMovies, 7)">
+      <div class="col" style="display: flex;flex-direction: column; margin: 1rem;"
+     *ngFor="let item of loca">
+        <img src="{{ item.movieImage }}" class="ele" />
+        <button class="ele" (click)="opentheatres(item.movieName)">
+          <strong>{{ item.movieName }}</strong>
+        </button>
+      </div>
     </div>
   </div>
-  <div *ngIf="searchFound == false" class="moviedetails" style="display: flex; flex-direction: row;margin: 1rem;">
-
-    <div class="movie" *ngFor="let movie of movies" style="display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 2rem;">
-      <img
-        src="{{ movie.movieImage }}"
-        class=""
-      />
-      <button
-        class=""
-        (click)="opentheatres(movie.movieName)"
-      >
-        <strong>{{ movie.movieName }}</strong>
-      </button>
+  <div *ngIf="searchFound == false" class="container" style=" display: flex;
+  flex-direction: column;
+  align-items: center;">
+    <div class="row" style="display: flex;" *ngFor="let movie of chunkedArray(movies, 7)">
+      <div class="col" *ngFor="let item of movie" style="display: flex;flex-direction: column;margin: 1rem;">
+        <img src="{{ item.movieImage }}" class="ele" />
+        <button class="ele" (click)="opentheatres(item.movieName)">
+          <strong>{{ item.movieName }}</strong>
+        </button>
+      </div>
     </div>
   </div>
-</div>
-<div *ngIf="isLoggedIn==false" class="unauthorized-page">
-  <app-unauthorized-page></app-unauthorized-page>
+  <div *ngIf="isLoggedIn == false" class="unauthorized-page">
+    <app-unauthorized-page></app-unauthorized-page>
+  </div>
 </div>

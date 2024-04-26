@@ -3,7 +3,7 @@ import { User } from '../user';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../user.service';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../shared/auth.service';
 import { Store } from '@ngrx/store';
 import { UserState } from '../profile/user.reducer';
 import { userDetails } from '../profile/user.action';

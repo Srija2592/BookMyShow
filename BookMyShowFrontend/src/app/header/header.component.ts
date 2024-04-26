@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
-import { User } from '../user';
+import { User } from 'src/app/user';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService } from 'src/app/shared/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { UpdateComponent } from '../update/update.component';
-import { UserService } from '../user.service';
-import { AuthGuard } from '../auth.guard';
-import { Store } from '@ngrx/store';
-import { LoginState, LoginStatusState } from '../auth/login.reducer';
-import { login, loginStatus } from '../auth/login.action';
-import { LoginResponse } from '../auth/login/loginresponse';
+import { UpdateComponent } from 'src/app/update/update.component';
+import { UserService } from 'src/app/user.service';
+import { AuthGuard } from 'src/app/shared/auth.guard';
+import { LoginResponse } from 'src/app/auth/login/loginresponse';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -21,7 +18,6 @@ import { Observable } from 'rxjs';
 export class HeaderComponent implements OnInit {
   isLoggedIn!: boolean;
   username!: string;
-  loginDetails!: Observable<LoginState>;
   user: any = {
     fullname: '',
     username: '',
@@ -49,8 +45,11 @@ export class HeaderComponent implements OnInit {
     this.authservice.loggedInn.subscribe((data: boolean) => {
       this.isLoggedIn = data;
     });
+    this.authservice.isLoggedIn().subscribe((d) => {
+      this.isLoggedIn = d;
+    });
 
-    console.log(this.isLoggedIn);
+
     this.authservice.username.subscribe(
       (data: string) => (this.username = data)
     );

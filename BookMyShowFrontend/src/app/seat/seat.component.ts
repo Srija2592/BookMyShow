@@ -3,7 +3,7 @@ import { SeatService } from '../seat.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../booking.service';
 import { Booking } from './BookingDto';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../shared/auth.service';
 import { TheatreService } from '../theatre.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -65,6 +65,7 @@ export class SeatComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.loggedInn.subscribe((d) => (this.isLoggedIn = d));
+
     this.getseats();
     this.theatreService
       .getTheatre(this.theatre, this.movie, this.location)
@@ -72,6 +73,9 @@ export class SeatComponent implements OnInit {
         this.selectedTheatre = data;
       });
     this.seats1.subscribe((d) => (this.seats = d));
+    this.authService.isLoggedIn().subscribe((d) => {
+      this.isLoggedIn = d;
+    });
   }
 
   getseats() {
@@ -79,6 +83,7 @@ export class SeatComponent implements OnInit {
       .allseats(this.theatre, this.movie, this.location)
       .subscribe((data) => {
         this.seats1.next(data);
+        console.log(data)
       });
   }
 

@@ -9,8 +9,8 @@ import { TheatreComponent } from './theatre/theatre.component';
 import { SeatComponent } from './seat/seat.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BookingComponent } from './booking/booking.component';
-import { AuthGuard } from './auth.guard';
-import { UnauthorizedPageComponent } from './unauthorized-page/unauthorized-page.component';
+import { AuthGuard } from './shared/auth.guard';
+import { UnauthorizedPageComponent } from './shared/unauthorized-page/unauthorized-page.component';
 
 const routes: Routes = [
   { path: 'sign-up', component: SignupComponent },

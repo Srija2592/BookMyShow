@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../shared/auth.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { LoginState, LoginStatusState } from '../auth/login.reducer';
 import { map } from 'rxjs';
 
 @Component({
@@ -16,8 +15,6 @@ export class HomeComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private store: Store<{ loginState: LoginState }>,
-    private store1: Store<{ loginStatusState: LoginStatusState }>
   ) {}
   // if user is admin then redirect to admin module
   ngOnInit(): void {

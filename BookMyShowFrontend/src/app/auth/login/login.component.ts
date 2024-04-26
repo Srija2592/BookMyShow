@@ -1,35 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginRequest } from './loginrequest';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/auth.service';
-import { Store } from '@ngrx/store';
-import { LoginState } from '../login.reducer';
-import { login } from '../login.action';
+import { AuthService } from 'src/app/shared/auth.service';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit,OnDestroy {
   loginForm!: FormGroup;
   loginRequest!: LoginRequest;
   registerSuccessMessage: string = '';
   isError!: boolean;
-  loginState$: Observable<LoginState>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
     private authService: AuthService,
-    private store: Store<{ loginState: LoginState }>
   ) {
-    this.loginState$ = store.select('loginState');
+
     this.loginRequest = {
       username: '',
       password: '',
@@ -67,4 +63,6 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+  ngOnDestroy() {
+ }
 }
