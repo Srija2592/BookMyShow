@@ -11,6 +11,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { BookingComponent } from './booking/booking.component';
 import { AuthGuard } from './shared/auth.guard';
 import { UnauthorizedPageComponent } from './shared/unauthorized-page/unauthorized-page.component';
+import { CalendarDateComponent } from './calendar-date/calendar-date.component';
 
 const routes: Routes = [
   { path: 'sign-up', component: SignupComponent },
@@ -18,11 +19,19 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'unauthorized', component: UnauthorizedPageComponent },
   {
+    path: 'date-picker/:location/:movie/:theatre',
+    component: CalendarDateComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: 'ROLE_USER',
+    },
+  },
+  {
     path: 'location',
     component: LocationComponent,
     canActivate: [AuthGuard],
     data: {
-      role: 'ROLE_USER'
+      role: 'ROLE_USER',
     },
   },
   {
@@ -42,7 +51,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'seat/:location/:movie/:theatre',
+    path: 'seat/:location/:movie/:theatre/:date-picker',
     component: SeatComponent,
     canActivate: [AuthGuard],
     data: {

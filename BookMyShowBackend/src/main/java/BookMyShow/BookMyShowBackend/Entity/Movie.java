@@ -45,4 +45,6 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
     private List<Booking> movieBookings;
+
+
 }

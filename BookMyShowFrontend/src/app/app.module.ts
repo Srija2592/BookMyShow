@@ -27,15 +27,21 @@ import { UserReducer } from './profile/user.reducer';
 import { SharedModule } from './shared/shared.module';
 import { AdminModule } from './admin/admin.module';
 import { HeaderComponent } from './header/header.component';
-import { NgxTypeaheadModule } from "ngx-typeahead";
+import { NgxTypeaheadModule } from 'ngx-typeahead';
 import { LocationReducer } from './location/location.reducer';
-import { MovieReducer} from './movie/movie.reducer';
+import { MovieReducer } from './movie/movie.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { MovieEffects } from './movie/movie.effects';
 import { MovieService } from './movie.service';
 import { TheatreReducer } from './theatre/theatre.reducer';
 import { AgGridModule } from 'ag-grid-angular';
 import { BookingModalComponent } from './booking-modal/booking-modal.component';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -51,10 +57,11 @@ import { BookingModalComponent } from './booking-modal/booking-modal.component';
     UpdateComponent,
     ProfileComponent,
     HeaderComponent,
-    BookingModalComponent
+    BookingModalComponent,
 
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
@@ -67,20 +74,25 @@ import { BookingModalComponent } from './booking-modal/booking-modal.component';
     SharedModule,
     RouterModule.forRoot([]),
     StoreModule.forRoot({
-      locations:LocationReducer,
+      locations: LocationReducer,
       userState: UserReducer,
-      movies:MovieReducer,
-      theatres:TheatreReducer
+      movies: MovieReducer,
+      theatres: TheatreReducer,
     }),
     // EffectsModule.forRoot([MovieEffects]),
     AppRoutingModule,
     NgxTypeaheadModule,
-    AgGridModule
+    AgGridModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatIconModule,
+    MatNativeDateModule
   ],
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    MovieService
+    MovieService,
   ],
   bootstrap: [AppComponent],
 })

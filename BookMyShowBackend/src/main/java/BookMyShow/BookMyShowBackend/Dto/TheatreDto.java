@@ -19,4 +19,5 @@ public class TheatreDto {
     private String locationName;
 
     private long price;
+
 }

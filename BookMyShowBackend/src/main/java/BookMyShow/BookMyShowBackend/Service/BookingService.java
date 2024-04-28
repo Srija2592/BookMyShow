@@ -40,6 +40,8 @@ public class BookingService {
 
     private final BookingMapper bookingMapper;
 
+    private  final  BookedDateInt bookedDateInt;
+
     private  static final String ORDER_PLACED="Placed";
 
     private static final String KEY="rzp_test_B17fxxcjey12FO";
@@ -53,15 +55,16 @@ public class BookingService {
         Location location=locationRepository.findBylocationName(bookingDto.getLocationName());
         Movie movie=movieRepository.findBymovieNameAndLocation_locationName(bookingDto.getMovieName(), bookingDto.getLocationName());
         Theatre theatre=theatreRepository.findBytheatreNameAndMovie_movieNameAndLocation_locationName(bookingDto.getTheatreName(), bookingDto.getMovieName(), bookingDto.getLocationName());
-
+        BookedDate bookedDate=bookedDateInt.findBydate(bookingDto.getBookedTime());
         List<Seat> seats=new ArrayList<>();
         List<Long> seatIds=bookingDto.getSeats();
         for(Long i:seatIds){
             Seat seat=seatRepository.findById(i).orElseThrow(()->new UsernameNotFoundException("seat not found"));
             seat.setSeatStatus(SeatStatus.BOOKED);
+            seat.setBookedDate(bookedDate);
             seats.add(seat);
         }
-        Booking booking= bookingMapper.map(bookingDto,location,movie,theatre,seats);
+        Booking booking= bookingMapper.map(bookingDto,location,movie,theatre,seats,bookedDate);
         booking.setTransactionId(transactionId);
         booking.setTotalPrice(bookingDto.getTotalPrice());
         booking.setTheatre(theatre);
@@ -70,7 +73,8 @@ public class BookingService {
         booking.setPaymentStatus(PaymentStatus.SUCCESS);
         LocalDate localDate=LocalDate.now();
         booking.setBookingTime(localDate);
-        System.out.println(seats);
+        booking.setBookedDate(bookedDate);
+
         bookingRepository.save(booking);
         for(Seat s:seats){
             s.setBooking(booking);
@@ -95,6 +99,7 @@ public class BookingService {
         bookingDto.setTotalPrice(b.getTotalPrice());
         bookingDto.setTransactionId(b.getTransactionId());
         bookingDto.setBookingTime(b.getBookingTime());
+        bookingDto.setBookedTime(b.getBookedDate().getDate());
         List<Long> l=new ArrayList<>();
         for(Seat s:b.getSeats()){
             l.add(s.getSeatId());

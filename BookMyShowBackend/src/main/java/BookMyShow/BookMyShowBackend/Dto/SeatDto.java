@@ -17,6 +17,7 @@ public class SeatDto {
 
     private String theatreName;
 
+    private String date;
 
 
 

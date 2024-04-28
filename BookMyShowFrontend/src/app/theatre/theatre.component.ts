@@ -61,9 +61,10 @@ export class TheatreComponent implements OnInit {
   }
 
   openseats(theatre: any) {
-    this.router.navigateByUrl(
-      '/seat/' + this.location + '/' + this.movie + '/' + theatre
-    );
+    // this.router.navigateByUrl(
+    //   '/seat/' + this.location + '/' + this.movie + '/' + theatre
+    // );
+    this.router.navigateByUrl('/date-picker/' + this.location + '/' + this.movie + '/' + theatre);
   }
 
   getInf: boolean = false;

@@ -43,5 +43,6 @@ public class Theatre {
     @OneToMany(mappedBy = "theatre",cascade = CascadeType.ALL)
     private List<Booking> theatreBookings;
 
-
+    @OneToMany(mappedBy = "theatre",cascade = CascadeType.ALL)
+    private List<BookedDate> bookedDateList;
 }

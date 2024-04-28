@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -40,4 +42,8 @@ public class Seat {
     private Movie movie;
 
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "dateId",referencedColumnName = "dateId")
+    private BookedDate bookedDate;
 }

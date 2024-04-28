@@ -39,6 +39,7 @@ export class SeatComponent implements OnInit {
   username: any = '';
   transacid: string = '';
   isLoggedIn: any = undefined;
+  date:any;
   constructor(
     private seatservice: SeatService,
     private activatedroute: ActivatedRoute,
@@ -50,6 +51,7 @@ export class SeatComponent implements OnInit {
     this.location = activatedroute.snapshot.params['location'];
     this.movie = activatedroute.snapshot.params['movie'];
     this.theatre = activatedroute.snapshot.params['theatre'];
+    this.date = activatedroute.snapshot.params['date-picker'];
     this.bookinginfo = {
       locationName: this.location,
       movieName: this.movie,
@@ -60,6 +62,7 @@ export class SeatComponent implements OnInit {
       transactionId: '',
       bookingTime: new Date(),
       bookingId: 0,
+      bookedTime: new Date(),
     };
   }
 
@@ -80,7 +83,7 @@ export class SeatComponent implements OnInit {
 
   getseats() {
     this.seatservice
-      .allseats(this.theatre, this.movie, this.location)
+      .allseats(this.date,this.theatre, this.movie, this.location)
       .subscribe((data) => {
         this.seats1.next(data);
         console.log(data)
@@ -101,6 +104,7 @@ export class SeatComponent implements OnInit {
   }
 
   book(selectedSeats: any) {
+    this.bookinginfo.bookedTime=this.date.toString();
     for (let entry of this.map.entries()) {
       if (entry[1] == 'SELECTED') {
         selectedSeats += 1;
@@ -109,6 +113,7 @@ export class SeatComponent implements OnInit {
       }
     }
 
+    this.bookinginfo.bookedTime=this.date.toString();
     this.bookinginfo.totalPrice =
       this.bookinginfo.seats.length * this.selectedTheatre.price;
     this.bookingService
@@ -117,7 +122,7 @@ export class SeatComponent implements OnInit {
         (response) => {
           this.openTransaction(response, this.bookinginfo);
           this.seatservice
-            .allseats(this.theatre, this.movie, this.location)
+            .allseats(this.date,this.theatre, this.movie, this.location)
             .subscribe((data) => {
               this.seats1.next(data);
             });
@@ -142,6 +147,7 @@ export class SeatComponent implements OnInit {
       handler: (response: any) => {
         if (response != null && response.razorpay_payment_id != null) {
           this.bookinginfo.transactionId = response.razorpay_payment_id;
+          bookinginfo.bookedTime=this.date.toString();
           // this.processResponse(response,bookinginfo,bookinginfo.transactionId);
 
           this.bookingService

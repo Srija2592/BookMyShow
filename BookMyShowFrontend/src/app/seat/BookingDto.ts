@@ -8,4 +8,5 @@ export interface Booking{
   totalPrice:number;
   transactionId:string;
   bookingTime:Date;
+  bookedTime:Date;
 }

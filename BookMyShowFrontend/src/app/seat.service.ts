@@ -13,8 +13,8 @@ export class SeatService {
     return this.http.post('http://localhost:8080/api/seat/addseat',seat);
   }
 
-  allseats(theatreName:string,movieName:string,locationName:string){
-    return this.http.get('http://localhost:8080/api/seat/allseats/'+theatreName+'/'+movieName+'/'+locationName);
+  allseats(date:Date,theatreName:string,movieName:string,locationName:string){
+    return this.http.get('http://localhost:8080/api/seat/allseats/'+date.toString()+'/'+theatreName+'/'+movieName+'/'+locationName);
   }
 
 

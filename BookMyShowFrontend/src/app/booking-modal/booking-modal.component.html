@@ -1,8 +1,8 @@
-<div class="page">
+<div class="page" #page1>
   <p class="heading">Booking Details are :</p>
   <div class="elements">
     <div class="attribute">
-      <span class="tag">Booking Time :</span
+      <span class="tag">Transaction Date :</span
       ><span>{{ booking.bookingTime }}</span>
     </div>
     <div class="attribute">
@@ -27,10 +27,17 @@
       ><span>{{ booking.totalPrice }}</span>
     </div>
     <div class="attribute">
+      <span class="tag">Booked Date : </span>
+      <span>{{ booking.bookedTime}}</span>
+    </div>
+    <div class="attribute">
       <span class="tag">Booked Seats are :</span>
       <div *ngFor="let seat of booking.seats">
         <span class="attribute">{{ seat }} &nbsp;&nbsp;</span>
       </div>
     </div>
   </div>
+</div>
+<div class="attribute1">
+  <button (click)="generatePdf(page1)">save as pdf</button>
 </div>

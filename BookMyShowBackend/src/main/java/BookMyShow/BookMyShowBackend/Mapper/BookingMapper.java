@@ -14,7 +14,7 @@ public abstract class BookingMapper {
     @Mapping(target="location",source = "location")
     @Mapping(target="movie",source = "movie")
     @Mapping(target = "theatre",source = "theatre")
-
    @Mapping(target = "seats",source = "seatList")
-    public abstract Booking map(BookingDto bookingDto, Location location, Movie movie, Theatre theatre, List<Seat> seatList);
+   @Mapping(target = "bookedDate",source = "bookedDate")
+    public abstract Booking map(BookingDto bookingDto, Location location, Movie movie, Theatre theatre, List<Seat> seatList,BookedDate bookedDate);
 }

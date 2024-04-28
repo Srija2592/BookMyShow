@@ -2,10 +2,12 @@ package BookMyShow.BookMyShowBackend.Service;
 
 
 import BookMyShow.BookMyShowBackend.Dto.TheatreDto;
+import BookMyShow.BookMyShowBackend.Entity.BookedDate;
 import BookMyShow.BookMyShowBackend.Entity.Location;
 import BookMyShow.BookMyShowBackend.Entity.Movie;
 import BookMyShow.BookMyShowBackend.Entity.Theatre;
 import BookMyShow.BookMyShowBackend.Mapper.TheatreMapper;
+import BookMyShow.BookMyShowBackend.Repository.BookedDateInt;
 import BookMyShow.BookMyShowBackend.Repository.LocationRepository;
 import BookMyShow.BookMyShowBackend.Repository.MovieRepository;
 import BookMyShow.BookMyShowBackend.Repository.TheatreRepository;
@@ -15,6 +17,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @AllArgsConstructor
@@ -31,14 +36,30 @@ public class TheatreService {
 
     private final TheatreMapper theatreMapper;
 
+    private final BookedDateInt bookedDateInt;
+
     public Theatre addTheatre(TheatreDto theatreDto){
+
+        Calendar cal = Calendar.getInstance();
 
         Location location=locationRepository.findBylocationName(theatreDto.getLocationName());
 
         Movie movie=movieRepository.findBymovieNameAndLocation_locationName(theatreDto.getMovieName(), theatreDto.getLocationName());
 
         Theatre t=theatreMapper.map(theatreDto,location,movie);
-        return theatreRepository.save(t);
+        theatreRepository.save(t);
+        List<BookedDate> l=new ArrayList<>();
+        for(int i=0;i<30;i++){
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+            BookedDate b=new BookedDate();
+            String  d=new Date(cal.getTimeInMillis()).toString();
+            b.setDate(d);
+            b.setTheatre(t);
+            b.setMovie(movie);
+            b.setLocation(location);
+            bookedDateInt.save(b);
+        }
+        return t;
     }
 
     public List<Theatre> alltheatresbymovielocation(String movieName,String locationName){

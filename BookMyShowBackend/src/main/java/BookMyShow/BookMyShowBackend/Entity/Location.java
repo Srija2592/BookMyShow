@@ -31,4 +31,6 @@ public class Location {
 
     @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
     private List<Booking> locationBookings;
+
+
 }

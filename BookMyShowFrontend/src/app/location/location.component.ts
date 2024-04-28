@@ -84,6 +84,7 @@ export class LocationComponent implements OnInit,OnDestroy {
 
     if (this.role[0] == 'ROLE_USER') {
       this.router.navigateByUrl('/movie/' + location.locationName);
+
     } else {
     }
   }

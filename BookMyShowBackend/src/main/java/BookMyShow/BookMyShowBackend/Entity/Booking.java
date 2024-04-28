@@ -53,4 +53,9 @@ public class Booking {
     private long totalPrice;
 
     private LocalDate bookingTime;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name ="dateId",referencedColumnName = "dateId")
+    private BookedDate bookedDate;
 }

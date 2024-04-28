@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -21,14 +22,14 @@ public class SeatController {
 
     @PostMapping("addseat")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
-    public ResponseEntity<Seat> addSeat(@RequestBody SeatDto seatDto){
+    public ResponseEntity<List<Seat>> addSeat(@RequestBody SeatDto seatDto){
         return ResponseEntity.status(HttpStatus.OK).body(seatService.addSeat(seatDto));
     }
 
-    @GetMapping("allseats/{theatreName}/{movieName}/{locationName}")
+    @GetMapping("allseats/{date}/{theatreName}/{movieName}/{locationName}")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    public ResponseEntity<List<Seat>> getAllseats(@PathVariable String theatreName,@PathVariable String movieName,@PathVariable String locationName){
-        return ResponseEntity.status(HttpStatus.OK).body(seatService.getAllBymovieName(theatreName,movieName,locationName));
+    public ResponseEntity<List<Seat>> getAllseats( @PathVariable  String date,@PathVariable String theatreName, @PathVariable String movieName, @PathVariable String locationName){
+        return ResponseEntity.status(HttpStatus.OK).body(seatService.getAllBymovieName(date,theatreName,movieName,locationName));
     }
     @PutMapping("updateseat")
     public ResponseEntity<Seat> updateseat(@RequestBody Seat seat){
