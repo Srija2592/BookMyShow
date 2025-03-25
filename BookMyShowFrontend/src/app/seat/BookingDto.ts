@@ -1,12 +1,12 @@
-export interface Booking{
+export interface Booking {
   bookingId: number;
-  locationName:string;
-  movieName:string;
-  theatreName:string;
-  username:string;
-  seats:Array<number>;
-  totalPrice:number;
-  transactionId:string;
-  bookingTime:Date;
-  bookedTime:Date;
+  locationName: string;
+  movieName: string;
+  theatreName: string;
+  username: string;
+  seats: Array<{ seatId: number; version: number }>; // Store seat version for concurrency check
+  totalPrice: number;
+  transactionId: string;
+  bookingTime: Date;
+  bookedTime: Date;
 }

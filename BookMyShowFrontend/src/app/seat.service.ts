@@ -14,7 +14,7 @@ export class SeatService {
   }
 
   allseats(date:Date,theatreName:string,movieName:string,locationName:string){
-    return this.http.get('http://localhost:8080/api/seat/allseats/'+date.toString()+'/'+theatreName+'/'+movieName+'/'+locationName);
+    return this.http.get('http://localhost:8080/api/seat/allseats/'+date+'/'+theatreName+'/'+movieName+'/'+locationName);
   }
 
 

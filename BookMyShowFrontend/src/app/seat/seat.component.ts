@@ -33,7 +33,8 @@ export class SeatComponent implements OnInit {
   bookinginfo!: Booking;
   reqseats: any = [];
 
-  selectedSeats: any;
+  selectedSeats: { seatId: number; version: number }[] = [];
+
   count = 0;
   map = new Map();
   username: any = '';
@@ -82,57 +83,88 @@ export class SeatComponent implements OnInit {
   }
 
   getseats() {
+    if (!this.date || !this.theatre || !this.movie || !this.location) {
+      console.error("Invalid input: all parameters must be provided");
+      return;
+    }
+
     this.seatservice
-      .allseats(this.date,this.theatre, this.movie, this.location)
-      .subscribe((data) => {
-        this.seats1.next(data);
-        console.log(data)
+      .allseats(this.date, this.theatre, this.movie, this.location)
+      .subscribe({
+        next: (data) => {
+          if (JSON.stringify(data) !== JSON.stringify(this.seats1.value)) {
+            this.seats1.next(data);
+          }
+          console.log("Seats:", data);
+        },
+        error: (err) => {
+          console.error("Error fetching seats:", err);
+        },
       });
   }
 
   selectseat(seat: any) {
-    let selected: boolean = false;
-    if (seat.seatStatus == 'EMPTY') {
+    if (seat.seatStatus === 'EMPTY') {
       seat.seatStatus = 'SELECTED';
-      selected = true;
       this.map.set(seat.seatId, 'SELECTED');
-    } else {
-      seat.seatStatus = 'EMPTY';
-      selected = false;
-      this.map.set(seat.seatId, 'EMPTY');
     }
   }
 
   book(selectedSeats: any) {
-    this.bookinginfo.bookedTime=this.date.toString();
-    for (let entry of this.map.entries()) {
-      if (entry[1] == 'SELECTED') {
-        selectedSeats += 1;
-        this.reqseats.push(entry[0]);
-        this.bookinginfo.seats.push(entry[0]);
-      }
-    }
+    this.seatservice
+      .allseats(this.date, this.theatre, this.movie, this.location)
+      .subscribe((latestSeats: any) => {
+        // Refresh seats before booking
+        this.seats1.next(latestSeats);
 
-    this.bookinginfo.bookedTime=this.date.toString();
-    this.bookinginfo.totalPrice =
-      this.bookinginfo.seats.length * this.selectedTheatre.price;
-    this.bookingService
-      .createTransaction(this.bookinginfo.totalPrice)
-      .subscribe(
-        (response) => {
-          this.openTransaction(response, this.bookinginfo);
-          this.seatservice
-            .allseats(this.date,this.theatre, this.movie, this.location)
-            .subscribe((data) => {
-              this.seats1.next(data);
-            });
-          // this.bookingService.book(this.bookinginfo,this.transacid).subscribe(data=>{this.booking=data,console.log(this.transacid)});
-        },
-        (error) => {
-          console.log(error);
+        let validSeats: any[] = [];
+        let seatVersions: any = {}; // Store versions
+
+        for (let entry of this.map.entries()) {
+          if (entry[1] === 'SELECTED') {
+            // Ensure seat is still available
+            let seat = latestSeats.find((s: any) => s.seatId === entry[0]);
+            if (seat && seat.seatStatus === 'EMPTY' && seat.version !== undefined) {
+
+              validSeats.push(entry[0]);
+              seatVersions[entry[0]] = seat.version; // Store version for concurrency check
+            } else {
+              alert(`Seat ${entry[0]} is no longer available.`);
+            }
+          }
         }
-      );
+
+        if (validSeats.length === 0) {
+          alert("No seats available. Please refresh and try again.");
+          return;
+        }
+
+        // Prepare booking request including seat versions
+        const bookedTime = this.date.toString();
+this.bookinginfo.bookedTime = bookedTime;
+        this.bookinginfo.bookedTime = bookedTime;
+
+        this.bookinginfo.seats = validSeats.map(seatId => ({
+          seatId: seatId,
+          version: seatVersions[seatId] // Send version number
+        }));
+        this.bookinginfo.totalPrice = validSeats.length * this.selectedTheatre.price;
+
+        this.bookingService.createTransaction(this.bookinginfo.totalPrice).subscribe(
+          (response) => {
+            this.openTransaction(response, this.bookinginfo);
+          },
+          (error) => {
+            if (error.status === 409) {
+              alert("Booking failed due to concurrent modification. Please refresh and try again.");
+            } else {
+              console.log(error);
+            }
+          }
+        );
+      });
   }
+
 
   openTransaction(response: any, bookinginfo: Booking) {
     var options = {
@@ -156,9 +188,12 @@ export class SeatComponent implements OnInit {
               (this.booking = data);
               this.router.navigateByUrl('/theatre/' + this.location + '/' + this.movie);
             });
-        } else {
-          alert('payment failed');
+        }else if (!response?.razorpay_payment_id) {
+          console.error("Payment failed: ", response);
+          alert("Payment failed. Please try again.");
+          return;
         }
+
       },
       prefill: {
         name: this.username,
