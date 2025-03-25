@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -20,7 +20,7 @@ public class BookedDate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long dateId;
 
-    private String date;
+    private LocalDate date;
 
     @OneToMany(mappedBy = "bookedDate",cascade = CascadeType.ALL)
    private List<Booking> bookingList;

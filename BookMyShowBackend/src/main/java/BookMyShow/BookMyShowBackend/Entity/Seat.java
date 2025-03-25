@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import jakarta.persistence.Version;
 
 @Getter
 @Setter
@@ -23,27 +23,29 @@ public class Seat {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name ="bookingId",referencedColumnName = "bookingId")
+    @JoinColumn(name ="bookingId", referencedColumnName = "bookingId")
     private Booking booking;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "theatreId",referencedColumnName = "theatreId")
+    @JoinColumn(name = "theatreId", referencedColumnName = "theatreId")
     private Theatre theatre;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "locationId",referencedColumnName = "locationId")
+    @JoinColumn(name = "locationId", referencedColumnName = "locationId")
     private Location location;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "movieId",referencedColumnName = "movieId")
+    @JoinColumn(name = "movieId", referencedColumnName = "movieId")
     private Movie movie;
-
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "dateId",referencedColumnName = "dateId")
+    @JoinColumn(name = "dateId", referencedColumnName = "dateId")
     private BookedDate bookedDate;
+
+    @Version  // Optimistic Locking
+    private Integer version;
 }

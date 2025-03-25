@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -33,28 +35,58 @@ public class SeatService {
 
     private final SeatMapper seatMapper;
 
-    public List<Seat> addSeat(SeatDto seatDto){
-        List<Seat> l=new ArrayList<>();
-        Location location=locationRepository.findBylocationName(seatDto.getLocationName());
-        Movie movie=movieRepository.findBymovieNameAndLocation_locationName(seatDto.getMovieName(),seatDto.getLocationName());
-        Theatre theatre=theatreRepository.findBytheatreNameAndMovie_movieNameAndLocation_locationName(seatDto.getTheatreName(),seatDto.getMovieName(),seatDto.getLocationName());
-        List<BookedDate> bookedDates=bookedDateInt.findAllByTheatre_theatreNameAndMovie_movieNameAndLocation_locationName(seatDto.getTheatreName(),seatDto.getMovieName(),seatDto.getLocationName());
+    @Transactional
+    public List<Seat> addSeat(SeatDto seatDto) {
+        Location location = locationRepository.findBylocationName(seatDto.getLocationName());
+        if (location == null) {
+            throw new IllegalArgumentException("Location not found: " + seatDto.getLocationName());
+        }
 
-        for(BookedDate bookedDate:bookedDates) {
-            Seat seat=seatMapper.map(seatDto,location,movie,theatre);
-             seat.setSeatStatus(SeatStatus.EMPTY);
-                seat.setBookedDate(bookedDate);
-                l.add(seatRepository.save(seat));
-            }
+        Movie movie = movieRepository.findBymovieNameAndLocation_locationName(seatDto.getMovieName(), seatDto.getLocationName());
+        if (movie == null) {
+            throw new IllegalArgumentException("Movie not found in location: " + seatDto.getMovieName());
+        }
 
-        return l;
+        Theatre theatre = theatreRepository.findBytheatreNameAndMovie_movieNameAndLocation_locationName(
+                seatDto.getTheatreName(), seatDto.getMovieName(), seatDto.getLocationName());
+        if (theatre == null) {
+            throw new IllegalArgumentException("Theatre not found: " + seatDto.getTheatreName());
+        }
+
+        List<BookedDate> bookedDates = bookedDateInt.findAllByTheatre_theatreNameAndMovie_movieNameAndLocation_locationName(
+                seatDto.getTheatreName(), seatDto.getMovieName(), seatDto.getLocationName());
+
+        if (bookedDates.isEmpty()) {
+            return Collections.emptyList(); // No seats to add
+        }
+
+        List<Seat> seats = new ArrayList<>();
+        for (BookedDate bookedDate : bookedDates) {
+            Seat seat = seatMapper.map(seatDto, location, movie, theatre);
+            seat.setSeatStatus(SeatStatus.EMPTY);
+            seat.setBookedDate(bookedDate);
+            seats.add(seat);
+        }
+
+        return seatRepository.saveAll(seats); // Batch insert for better performance
     }
 
-    public List<Seat> getAllBymovieName(String date,String theatreName, String movieName, String locationName){
-        BookedDate bookedDate=bookedDateInt.findBydate(date.toString());
 
-        return seatRepository.findAllByBookedDate_dateAndTheatre_theatreNameAndMovie_movieNameAndLocation_locationName(date.toString(),theatreName,movieName,locationName);
+    public List<Seat> getAllBymovieName(LocalDate date, String theatreName, String movieName, String locationName){
+        BookedDate bookedDate = bookedDateInt.findBydate(date);
+        if (bookedDate == null) {
+            System.out.println("❌ No bookedDate found for: " + date);
+            return Collections.emptyList();
+        }
+
+        List<Seat> seats = seatRepository.findAllByBookedDate_dateAndTheatre_theatreNameAndMovie_movieNameAndLocation_locationName(
+                date, theatreName, movieName, locationName
+        );
+
+        System.out.println("✅ Found seats: " + seats.size());
+        return seats;
     }
+
 
     public Seat updateseat(Seat seat){
         Seat s=seatRepository.findById(seat.getSeatId()).orElseThrow(()->new UsernameNotFoundException("seat not found"));

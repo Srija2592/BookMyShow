@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -52,7 +53,7 @@ public class TheatreService {
         for(int i=0;i<30;i++){
             cal.add(Calendar.DAY_OF_MONTH, 1);
             BookedDate b=new BookedDate();
-            String  d=new Date(cal.getTimeInMillis()).toString();
+            LocalDate d= LocalDate.parse(new Date(cal.getTimeInMillis()).toString());
             b.setDate(d);
             b.setTheatre(t);
             b.setMovie(movie);

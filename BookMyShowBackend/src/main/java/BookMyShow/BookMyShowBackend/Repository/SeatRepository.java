@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public interface SeatRepository extends JpaRepository<Seat,Long> {
 
-    List<Seat> findAllByBookedDate_dateAndTheatre_theatreNameAndMovie_movieNameAndLocation_locationName( String date,String theatreName, String movieName, String locationName);
+    List<Seat> findAllByBookedDate_dateAndTheatre_theatreNameAndMovie_movieNameAndLocation_locationName(LocalDate date, String theatreName, String movieName, String locationName);
 }

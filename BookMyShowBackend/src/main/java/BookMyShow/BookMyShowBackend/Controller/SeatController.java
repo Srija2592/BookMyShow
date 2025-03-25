@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class SeatController {
 
     @GetMapping("allseats/{date}/{theatreName}/{movieName}/{locationName}")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    public ResponseEntity<List<Seat>> getAllseats( @PathVariable  String date,@PathVariable String theatreName, @PathVariable String movieName, @PathVariable String locationName){
+    public ResponseEntity<List<Seat>> getAllseats(@PathVariable LocalDate date, @PathVariable String theatreName, @PathVariable String movieName, @PathVariable String locationName){
         return ResponseEntity.status(HttpStatus.OK).body(seatService.getAllBymovieName(date,theatreName,movieName,locationName));
     }
     @PutMapping("updateseat")

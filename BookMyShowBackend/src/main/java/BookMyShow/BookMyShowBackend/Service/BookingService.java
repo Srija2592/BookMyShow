@@ -1,4 +1,5 @@
 package BookMyShow.BookMyShowBackend.Service;
+import jakarta.persistence.OptimisticLockException;
 
 import BookMyShow.BookMyShowBackend.Dto.BookingDto;
 import BookMyShow.BookMyShowBackend.Entity.*;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional
@@ -50,48 +52,76 @@ public class BookingService {
 
     private final MailService mailService;
 
-    public Booking book(BookingDto bookingDto,String transactionId){
-        User user=userRepository.findByUsername(bookingDto.getUsername()).orElseThrow(()->new UsernameNotFoundException("user not found"));
-        Location location=locationRepository.findBylocationName(bookingDto.getLocationName());
-        Movie movie=movieRepository.findBymovieNameAndLocation_locationName(bookingDto.getMovieName(), bookingDto.getLocationName());
-        Theatre theatre=theatreRepository.findBytheatreNameAndMovie_movieNameAndLocation_locationName(bookingDto.getTheatreName(), bookingDto.getMovieName(), bookingDto.getLocationName());
-        BookedDate bookedDate=bookedDateInt.findBydate(bookingDto.getBookedTime());
-        List<Seat> seats=new ArrayList<>();
-        List<Long> seatIds=bookingDto.getSeats();
-        for(Long i:seatIds){
-            Seat seat=seatRepository.findById(i).orElseThrow(()->new UsernameNotFoundException("seat not found"));
+    @Transactional
+    public Booking book(BookingDto bookingDto, String transactionId) {
+        User user = userRepository.findByUsername(bookingDto.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        Location location = locationRepository.findBylocationName(bookingDto.getLocationName());
+        Movie movie = movieRepository.findBymovieNameAndLocation_locationName(bookingDto.getMovieName(), bookingDto.getLocationName());
+        Theatre theatre = theatreRepository.findBytheatreNameAndMovie_movieNameAndLocation_locationName(
+                bookingDto.getTheatreName(), bookingDto.getMovieName(), bookingDto.getLocationName());
+        BookedDate bookedDate = bookedDateInt.findBydate(bookingDto.getBookedTime());
+
+        // ✅ Extract seat IDs from SeatDto1
+        List<Long> seatIds = bookingDto.getSeats().stream()
+                .map(BookingDto.SeatDto1::getSeatId)
+                .collect(Collectors.toList());
+
+        // ✅ Fetch all seats from database at once
+        List<Seat> seats = seatRepository.findAllById(seatIds);
+        if (seats.size() != seatIds.size()) {
+            throw new IllegalStateException("Some seats were not found");
+        }
+
+        // ✅ Validate seat availability and update status
+        for (Seat seat : seats) {
+            if (seat.getSeatStatus() == SeatStatus.BOOKED) {
+                throw new IllegalStateException("Seat with ID " + seat.getSeatId() + " is already booked");
+            }
             seat.setSeatStatus(SeatStatus.BOOKED);
             seat.setBookedDate(bookedDate);
-            seats.add(seat);
         }
-        Booking booking= bookingMapper.map(bookingDto,location,movie,theatre,seats,bookedDate);
+        seatRepository.saveAll(seats);
+
+        // ✅ Create booking and save
+        Booking booking = bookingMapper.map(bookingDto, location, movie, theatre, seats, bookedDate);
         booking.setTransactionId(transactionId);
         booking.setTotalPrice(bookingDto.getTotalPrice());
         booking.setTheatre(theatre);
-        booking.setSeats(seats);
         booking.setUser(user);
         booking.setPaymentStatus(PaymentStatus.SUCCESS);
-        LocalDate localDate=LocalDate.now();
-        booking.setBookingTime(localDate);
+        booking.setBookingTime(LocalDate.now());
         booking.setBookedDate(bookedDate);
-
         bookingRepository.save(booking);
-        for(Seat s:seats){
-            s.setBooking(booking);
+
+        // ✅ Set booking reference in seats and save in batch
+        for (Seat seat : seats) {
+            seat.setBooking(booking);
         }
-        mailService.sendMail(new NotificationEmail("Book My Show booking details of transaction", user.getEmail(), "Booking details are :"+"transaction id : "+booking.getTransactionId()+" with total payment of : "+booking.getTotalPrice()+" for movie "+booking.getMovie().getMovieName()+" at theatre of "+booking.getTheatre().getTheatreName()+","+booking.getLocation().getLocationName()+" please check your booking details here "+"http://localhost:4200/booking/"+booking.getBookingId()));
+        seatRepository.saveAll(seats);
+
+        // ✅ Send confirmation email
+        mailService.sendMail(new NotificationEmail(
+                "Book My Show booking details",
+                user.getEmail(),
+                "Booking details:\nTransaction ID: " + booking.getTransactionId() +
+                        "\nTotal Price: " + booking.getTotalPrice() +
+                        "\nMovie: " + booking.getMovie().getMovieName() +
+                        "\nTheatre: " + booking.getTheatre().getTheatreName() + ", " + booking.getLocation().getLocationName() +
+                        "\nBooking Details: http://localhost:4200/booking/" + booking.getBookingId()));
+
+        System.err.println("Booking ID: " + booking.getBookingId());
+
         return booking;
-
     }
 
-    public List<Booking> allbookingsbyuser(String username){
-        return bookingRepository.findAllByUser_username(username);
-    }
+    public BookingDto getdetails(Long id) {
 
-    public BookingDto getdetails(Long id){
+        Booking b = bookingRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Booking not found"));
 
-        Booking b= bookingRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("booking not found"));
-        BookingDto bookingDto=new BookingDto();
+        BookingDto bookingDto = new BookingDto();
         bookingDto.setLocationName(b.getLocation().getLocationName());
         bookingDto.setMovieName(b.getMovie().getMovieName());
         bookingDto.setTheatreName(b.getTheatre().getTheatreName());
@@ -100,11 +130,14 @@ public class BookingService {
         bookingDto.setTransactionId(b.getTransactionId());
         bookingDto.setBookingTime(b.getBookingTime());
         bookingDto.setBookedTime(b.getBookedDate().getDate());
-        List<Long> l=new ArrayList<>();
-        for(Seat s:b.getSeats()){
-            l.add(s.getSeatId());
-        }
-        bookingDto.setSeats(l);
+
+        // ✅ Convert Seat list to SeatDto1 list
+        List<BookingDto.SeatDto1> seatDtos = b.getSeats().stream()
+                .map(seat -> new BookingDto.SeatDto1(seat.getSeatId(), seat.getVersion())) // ✅ Fixed missing parenthesis
+                .collect(Collectors.toList());
+
+
+        bookingDto.setSeats(seatDtos); // ✅ Set the correct SeatDto1 list
         return bookingDto;
     }
 

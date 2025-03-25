@@ -27,11 +27,11 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.OK).body(bookingService.book(bookingDto,transactionId));
     }
 
-    @GetMapping("bookings/{username}")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    public ResponseEntity<List<Booking>> allbookings(@PathVariable String username){
-        return ResponseEntity.status(HttpStatus.OK).body(bookingService.allbookingsbyuser(username));
-    }
+//    @GetMapping("bookings/{username}")
+//    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
+//    public ResponseEntity<List<Booking>> allbookings(@PathVariable String username){
+//        return ResponseEntity.status(HttpStatus.OK).body(bookingService.allbookingsbyuser(username));
+//    }
 
     @GetMapping("{id}")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")

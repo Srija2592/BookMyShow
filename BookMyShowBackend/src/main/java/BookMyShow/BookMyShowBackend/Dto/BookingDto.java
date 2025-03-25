@@ -1,13 +1,10 @@
 package BookMyShow.BookMyShowBackend.Dto;
 
-import BookMyShow.BookMyShowBackend.Entity.PaymentStatus;
-import BookMyShow.BookMyShowBackend.Entity.Seat;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,22 +13,21 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class BookingDto {
-
     private String locationName;
-
     private String movieName;
-
     private String theatreName;
-
     private String username;
-
     private String transactionId;
-
     private long totalPrice;
-
-    private List<Long> seats;
-
     private LocalDate bookingTime;
+    private LocalDate bookedTime;
+    private List<SeatDto1> seats;  // ✅ Change List<Long> to List<SeatDto>
 
-    private String bookedTime;
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SeatDto1 {
+        private Long seatId;
+        private int version;
+    }
 }
