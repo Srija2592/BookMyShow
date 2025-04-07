@@ -8,6 +8,7 @@ import { TheatreService } from '../theatre.service';
 import { BehaviorSubject } from 'rxjs';
 
 declare var Razorpay: any;
+
 @Component({
   selector: 'app-seat',
   templateUrl: './seat.component.html',
@@ -15,32 +16,24 @@ declare var Razorpay: any;
 })
 export class SeatComponent implements OnInit {
   booked: boolean = false;
-
   seats: any;
   seats1 = new BehaviorSubject<Object>([]);
-
   location: any = '';
-
   movie: any = '';
-
   theatre: any = '';
-
   booking: any;
-
   selectedTheatre: any;
   bookedSeats: any = [];
-
   bookinginfo!: Booking;
   reqseats: any = [];
-
   selectedSeats: { seatId: number; version: number }[] = [];
-
   count = 0;
   map = new Map();
   username: any = '';
-  transacid: string = '';
+  transacid: string = ''; // Optional: Remove if unused
   isLoggedIn: any = undefined;
-  date:any;
+  date: any;
+
   constructor(
     private seatservice: SeatService,
     private activatedroute: ActivatedRoute,
@@ -60,7 +53,7 @@ export class SeatComponent implements OnInit {
       username: authService.getUserName(),
       seats: [],
       totalPrice: 0,
-      transactionId: '',
+      paymentId: '',
       bookingTime: new Date(),
       bookingId: 0,
       bookedTime: new Date(),
@@ -69,7 +62,6 @@ export class SeatComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.loggedInn.subscribe((d) => (this.isLoggedIn = d));
-
     this.getseats();
     this.theatreService
       .getTheatre(this.theatre, this.movie, this.location)
@@ -87,7 +79,6 @@ export class SeatComponent implements OnInit {
       console.error("Invalid input: all parameters must be provided");
       return;
     }
-
     this.seatservice
       .allseats(this.date, this.theatre, this.movie, this.location)
       .subscribe({
@@ -108,28 +99,30 @@ export class SeatComponent implements OnInit {
       seat.seatStatus = 'SELECTED';
       this.map.set(seat.seatId, 'SELECTED');
     }
+    else if (seat.seatStatus === 'SELECTED') {
+      seat.seatStatus = 'EMPTY';
+      this.map.set(seat.seatId, 'EMPTY');
+    }
   }
 
-  book(selectedSeats: any) {
+  book() { // Removed unused 'selectedSeats' param
     this.seatservice
       .allseats(this.date, this.theatre, this.movie, this.location)
       .subscribe((latestSeats: any) => {
-        // Refresh seats before booking
         this.seats1.next(latestSeats);
 
         let validSeats: any[] = [];
-        let seatVersions: any = {}; // Store versions
+        let seatVersions: any = {};
 
         for (let entry of this.map.entries()) {
           if (entry[1] === 'SELECTED') {
-            // Ensure seat is still available
             let seat = latestSeats.find((s: any) => s.seatId === entry[0]);
             if (seat && seat.seatStatus === 'EMPTY' && seat.version !== undefined) {
-
               validSeats.push(entry[0]);
-              seatVersions[entry[0]] = seat.version; // Store version for concurrency check
+              seatVersions[entry[0]] = seat.version;
             } else {
               alert(`Seat ${entry[0]} is no longer available.`);
+              return;
             }
           }
         }
@@ -139,68 +132,58 @@ export class SeatComponent implements OnInit {
           return;
         }
 
-        // Prepare booking request including seat versions
-        const bookedTime = this.date.toString();
-this.bookinginfo.bookedTime = bookedTime;
-        this.bookinginfo.bookedTime = bookedTime;
-
         this.bookinginfo.seats = validSeats.map(seatId => ({
           seatId: seatId,
-          version: seatVersions[seatId] // Send version number
+          version: seatVersions[seatId]
         }));
         this.bookinginfo.totalPrice = validSeats.length * this.selectedTheatre.price;
+        this.bookinginfo.bookedTime = this.date.toString();
 
-        this.bookingService.createTransaction(this.bookinginfo.totalPrice).subscribe(
+        // Changed: Call initiateBooking instead of createTransaction
+        this.bookingService.initiateBooking(this.bookinginfo).subscribe(
           (response) => {
-            this.openTransaction(response, this.bookinginfo);
+            if (response.orderId) {
+              this.openRazorpay(response.orderId);
+            } else {
+              alert("Failed to initiate booking. Please try again.");
+            }
           },
           (error) => {
             if (error.status === 409) {
               alert("Booking failed due to concurrent modification. Please refresh and try again.");
             } else {
-              console.log(error);
+              alert("Error initiating booking: " + error.message);
             }
           }
         );
       });
   }
 
-
-  openTransaction(response: any, bookinginfo: Booking) {
-    var options = {
-      order_id: response.orderId,
-      key: response.key,
-      amount: response.amount,
-      currency: response.currency,
-      name: this.username,
-      description: 'Payment for selected movie seats',
-      image:
-        'https://cdn.pixabay.com/photo/2023/09/02/15/34/mountains-8229139_1280.jpg',
+  // New: Minimal Razorpay trigger
+  openRazorpay(orderId: string) {
+    const options = {
+      order_id: orderId,
+      key: 'rzp_test_MAD6KIJldUXU9a', // Replace with your new Key ID
       handler: (response: any) => {
-        if (response != null && response.razorpay_payment_id != null) {
-          this.bookinginfo.transactionId = response.razorpay_payment_id;
-          bookinginfo.bookedTime=this.date.toString();
-          // this.processResponse(response,bookinginfo,bookinginfo.transactionId);
-
-          this.bookingService
-            .book(this.bookinginfo, bookinginfo.transactionId)
-            .subscribe((data) => {
-              (this.booking = data);
+        if (response?.razorpay_payment_id) {
+          this.bookingService.confirmBooking(response.razorpay_payment_id).subscribe(
+            (data) => {
+              this.booking = data;
               this.router.navigateByUrl('/theatre/' + this.location + '/' + this.movie);
-            });
-        }else if (!response?.razorpay_payment_id) {
-          console.error("Payment failed: ", response);
+            },
+            (error) => {
+              alert("Booking confirmation failed. Please contact support if charged.");
+            }
+          );
+        } else {
           alert("Payment failed. Please try again.");
-          return;
         }
-
       },
       prefill: {
         name: this.username,
         email: 'ds@gmail.com',
         contact: '9876543210',
       },
-
       notes: {
         address: 'Movie ticket booking',
       },
@@ -208,13 +191,8 @@ this.bookinginfo.bookedTime = bookedTime;
         color: '#F3254',
       },
     };
-    var razorpayObject = new Razorpay(options);
+    const razorpayObject = new Razorpay(options);
     razorpayObject.open();
   }
-
-  processResponse(resp: any, bo: Booking, tid: string) {
-    bo.transactionId = resp.razorpay_payment_id;
-    this.transacid = bo.transactionId;
-    tid = bo.transactionId;
-  }
+  // Removed: openTransaction and processResponse
 }

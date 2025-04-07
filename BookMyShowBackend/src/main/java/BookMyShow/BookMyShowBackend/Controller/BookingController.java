@@ -2,47 +2,74 @@ package BookMyShow.BookMyShowBackend.Controller;
 
 import BookMyShow.BookMyShowBackend.Dto.BookingDto;
 import BookMyShow.BookMyShowBackend.Entity.Booking;
-import BookMyShow.BookMyShowBackend.Entity.TransactionDetails;
 import BookMyShow.BookMyShowBackend.Service.BookingService;
+import BookMyShow.BookMyShowBackend.Service.OrderResponse;
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import static BookMyShow.BookMyShowBackend.Service.BookingService.KEY;
+import static BookMyShow.BookMyShowBackend.Service.BookingService.KEY_SECRET;
 
 @RestController
-@AllArgsConstructor
-@RequestMapping("/api/booking/")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api/booking")
 public class BookingController {
 
-    private final BookingService bookingService;
+    @Autowired
+    private BookingService bookingService;
 
-    @PostMapping("book/{transactionId}")
+    @PostMapping("/initiate")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    public ResponseEntity<Booking> addbooking(@RequestBody BookingDto bookingDto,@PathVariable String transactionId){
-        return ResponseEntity.status(HttpStatus.OK).body(bookingService.book(bookingDto,transactionId));
+    public ResponseEntity<?> initiateBooking(@RequestBody BookingDto bookingDto) {
+        System.err.print("Received booking request: {}"+ bookingDto);
+        try {
+            OrderResponse response = bookingService.initiateBooking(bookingDto);
+            return ResponseEntity.ok(response);
+        } catch (RazorpayException e) {
+            return ResponseEntity.status(400).body("Error initiating booking: " + e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(400).body("Invalid booking request: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.print("Unexpected error in initiateBooking: {}"+e.getMessage());
+            return ResponseEntity.status(500).body("Internal server error: " + e.getMessage());
+        }
     }
 
-//    @GetMapping("bookings/{username}")
-//    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-//    public ResponseEntity<List<Booking>> allbookings(@PathVariable String username){
-//        return ResponseEntity.status(HttpStatus.OK).body(bookingService.allbookingsbyuser(username));
-//    }
-
-    @GetMapping("{id}")
+    @PostMapping("/confirm")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    public ResponseEntity<BookingDto> booking(@PathVariable long id){
-        return ResponseEntity.status(HttpStatus.OK).body(bookingService.getdetails(id));
+    public ResponseEntity<?> confirmBooking(@RequestParam String paymentId) {
+        try {
+            Booking booking = bookingService.confirmBooking(paymentId);
+            return ResponseEntity.ok(booking);
+        } catch (RazorpayException | IllegalStateException e) {
+            return ResponseEntity.status(400).body("Error confirming booking: " + e.getMessage());
+        }
     }
 
-    @GetMapping("/createTransaction/{amount}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
-    public TransactionDetails createTransaction(@PathVariable(name="") long amount) throws RazorpayException {
-        return bookingService.createTransaction(amount);
+    public ResponseEntity<?> getBookingDetails(@PathVariable Long id) {
+        BookingDto bookingDto = bookingService.getdetails(id);
+        return ResponseEntity.ok(bookingDto);
+    }
 
+    @GetMapping("/test-razorpay")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
+    public ResponseEntity<?> testRazorpay() {
+        try {
+            RazorpayClient razorpayClient = new RazorpayClient(KEY, KEY_SECRET);
+            JSONObject orderRequest = new JSONObject();
+            orderRequest.put("amount", 60000);
+            orderRequest.put("currency", "INR");
+            Order order = razorpayClient.orders.create(orderRequest);
+            return ResponseEntity.ok("Order ID: " + order.get("id"));
+        } catch (RazorpayException e) {
+            return ResponseEntity.status(400).body("Razorpay test failed: " + e.getMessage());
+        }
     }
 }

@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import lombok.*;
 
 public enum SeatStatus {
-    EMPTY,BOOKED;
+    EMPTY, RESERVED;
 
 
 }

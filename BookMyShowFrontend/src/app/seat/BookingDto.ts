@@ -6,7 +6,7 @@ export interface Booking {
   username: string;
   seats: Array<{ seatId: number; version: number }>; // Store seat version for concurrency check
   totalPrice: number;
-  transactionId: string;
+  paymentId: string;
   bookingTime: Date;
   bookedTime: Date;
 }

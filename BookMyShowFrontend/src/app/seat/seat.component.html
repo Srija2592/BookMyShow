@@ -2,35 +2,22 @@
   <div *ngFor="let seat of seats" class="seat1">
     <button
       [ngClass]="{
-        red: seat.seatStatus == 'BOOKED',
-        green: seat.seatStatus == 'EMPTY',
-        blue: seat.seatStatus == 'SELECTED'
+        'red': seat.seatStatus === 'RESERVED',
+        'green': seat.seatStatus === 'EMPTY',
+        'blue': seat.seatStatus === 'SELECTED'
       }"
       (click)="selectseat(seat)"
+      [disabled]="seat.seatStatus === 'RESERVED'"
     >
       <strong>{{ seat.seatId }}</strong>
     </button>
-
-    <!-- <div class="seat1">
-      <p *ngIf="seat.seatStatus == 'EMPTY'" [ngStyle]="{ color: 'green' }">
-        <button class="seat" (click)="selectseat(seat)">
-          <strong>{{ seat.seatId }}</strong>
-        </button>
-      </p>
-    </div>
-    <div class="seat1">
-      <p *ngIf="seat.seatStatus == 'SELECTED'" [ngStyle]="{ color: 'blue' }">
-        <button class="seat" (click)="selectseat(seat)">
-          <strong>{{ seat.seatId }}</strong>
-        </button>
-      </p>
-    </div> -->
   </div>
 </div>
+
 <div class="book" *ngIf="isLoggedIn">
-  <button class="" (click)="book(selectedSeats)">Book</button>
+  <button (click)="book()">Book</button>
 </div>
 
-<div *ngIf="isLoggedIn==false" class="unauthorized-page">
+<div *ngIf="!isLoggedIn" class="unauthorized-page">
   <app-unauthorized-page></app-unauthorized-page>
 </div>

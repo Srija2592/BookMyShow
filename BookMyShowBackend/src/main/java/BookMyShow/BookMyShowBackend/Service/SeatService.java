@@ -90,7 +90,7 @@ public class SeatService {
 
     public Seat updateseat(Seat seat){
         Seat s=seatRepository.findById(seat.getSeatId()).orElseThrow(()->new UsernameNotFoundException("seat not found"));
-        s.setSeatStatus(SeatStatus.BOOKED);
+        s.setSeatStatus(SeatStatus.RESERVED);
         return s;
     }
 
